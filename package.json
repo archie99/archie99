@@ -1,0 +1,18 @@
+{
+  "name": "N-Ex-Mngs-Yui",
+  "version": "0.0.0",
+  "description": "N-Ex-Mngs-Yui",
+  "main": "app.js",
+  "author": {
+    "name": "arkadiy",
+    "email": ""
+  },
+  "dependencies": {
+    "express": "3.4.4",
+    "jade": "*",
+    "stylus": "*",
+    "mongoose": "*",
+    "mongoskin": "~0.6.1",
+    "twitter-bootstrap-3.0.0": "~3.0.0"
+  }
+}

@@ -1,0 +1,35 @@
+//use only spaces for indentation: each indent should be 4 spaces.
+//or only tabs for indentation.
+extends layout
+
+block content
+	script.
+		$('#navhome').removeClass('active');
+		$('#navclients').addClass('active');
+		$('#navvisits').removeClass('active');	
+	div.container.well.well-lg
+		div.content
+			h3 CLIENTS
+			div.row
+				div.col-xs-2
+					form.form-search
+						div.input-group							
+							input#search.form-control(type="text")
+							span.input-group-btn
+								button#search.btn.btn-default.input-append(type="button")
+									span.glyphicon.glyphicon-search
+				div.col-xs-10
+					button.btn.btn-default.pull-right(id="newclient", type="submit", onclick="location.href='/newclient'") Add New Client
+			br/
+			table.table
+				tbody
+					each client, i in clients
+						tr							
+							td #{client.firstname}
+							td #{client.lastname}
+							td #{client.cell}
+							td #{client.email}
+							td 
+								a(href="/_client/#{client._id}/events") Visits
+							td
+								a(href="/_client/#{client._id}") Edit

@@ -1,0 +1,41 @@
+//use only spaces for indentation: each indent should be 4 spaces.
+//or only tabs for indentation.
+extends layout
+block content
+	script.
+		$('#navhome').removeClass('active');
+		$('#navclients').addClass('active');
+		$('#navvisits').removeClass('active');	
+		
+	div.container.well.well-lg
+		div.content
+			h5 EVENTS: #{cl.firstname} #{cl.lastname}
+			table.table
+				tbody
+					each event, i in events
+						script.
+							var d = #{event.start_date};							
+						tr							
+							td.col-lg-3 #{event.start_date.toLocaleDateString()}
+							td.col-lg-3 #{event.text}
+							td.col-lg-3(style="overflow: auto;") #{event.comments}
+							//td(style="visibility: hidden;") #{event._id}
+							td.col-lg-1 
+								a(href="/event/#{event._id}/services") Details
+							td.col-lg-1
+								button.myclass(id=event._id)
+							td.col-lg-1
+								button.btn.btn-primary.btn-sm(id=event._id, data-toggle="modal", data-target="#myModal")
+							
+			div.modal.fade(id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+				div.modal-dialog
+					div.modal-content
+						div.modal-header
+							button.close(type="button", data-dismiss="modal" aria-hidden="true") &times
+							h4.modal-title(id="myModalLabel") Modal title
+						div.modal-body
+							...
+						div.modal-footer
+							button.btn.btn-default(type="button", data-dismiss="modal") Close
+							button.btn.btn-primary(type="button") Save changes
+			div#result here

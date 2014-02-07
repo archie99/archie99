@@ -1,0 +1,24 @@
+//use only spaces for indentation: each indent should be 4 spaces.
+//or only tabs for indentation.
+extends layout
+block content
+	script.
+		$('#navhome').removeClass('active');
+		$('#navclients').addClass('active');
+		$('#navvisits').removeClass('active');	
+	div.container.well.well-lg
+		div.content
+			h5 SERVICES
+			table.table
+					tbody
+						- var total = 0
+						each service, i in services
+							- total = total + service.price
+							tr
+								td.col-lg-2 #{service.service}
+								td.col-lg-2 #{service.price}
+								td.col-lg-2 #{service.comments}
+						tr
+							td.col-lg-2 Total:
+							td.col-lg-2 #{total}
+	

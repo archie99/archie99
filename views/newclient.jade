@@ -1,0 +1,83 @@
+//use only spaces for indentation: each indent should be 4 spaces.
+//or only tabs for indentation.
+extends layout
+
+block content
+	script.
+		$('#navhome').removeClass('active');
+		$('#navclients').addClass('active');
+		$('#navvisits').removeClass('active');
+	div.container.well.well-lg
+		div.content
+			h3.col-sm-offset-2 NEW CLIENT 	
+				- var date = new Date().toLocaleDateString();
+			br/
+			form.form-horizontal(id="newclientform", name="addclient", method="post",action="/addclient")
+				div.form-group
+					label.col-sm-2.control-label(for="firstname") First Name
+					div.col-sm-8
+						input.form-control(id="firstname", type="text", name="firstname", minlength="2", required, placeholder="First Name")
+				div.form-group
+					label.col-sm-2.control-label(for="lastname") Last Name
+					div.col-sm-8
+						input.form-control(id="lastname", type="text", name="lastname", placeholder="Last Name")
+				
+				div.form-group
+					label.col-sm-2.control-label(for="email") Email
+					div.col-sm-8
+						input.form-control(id="email", type="email", name="email", placeholder="Email")
+
+				div.form-group
+					label.col-sm-2.control-label(for="cell") Cell
+					div.col-sm-8
+						input.form-control(id="cell", type="tel", name="cell", placeholder="Cell")
+				
+				div.form-group
+					label.col-sm-2.control-label(for="home") Home
+					div.col-sm-8
+						input.form-control(id="home", type="tel", name="home", placeholder="Home")
+
+				div.form-group
+					label.col-sm-2.control-label(for="work") Work
+					div.col-sm-8
+						input.form-control(id="work", type="tel", name="work", placeholder="Work")
+
+				div.form-group
+					label.col-sm-2.control-label(for="address") Address
+					div.col-sm-8
+						input.form-control(id="address", type="text", name="address", placeholder="Address")
+
+				div.form-group
+					label.col-sm-2.control-label(for="city") City
+					div.col-sm-8
+						input.form-control(id="city", type="text", name="city", placeholder="City")
+
+				div.form-group
+					label.col-sm-2.control-label(for="birthday") BD
+					div.col-sm-8
+						input.form-control(id="birthday", type="text", value="", name="birthday")	
+				
+				div.form-group
+					label.col-sm-2.control-label(for="family") Family
+					div.col-sm-8
+						textarea.form-control(id="family", type="text", name="family", placeholder="Family")
+				
+				div.form-group
+					label.col-sm-2.control-label(for="contacts") Contacts
+					div.col-sm-8
+						textarea.form-control(id="contacts", type="text", name="contacts", placeholder="Contacts")
+
+				div.form-group
+					label.col-sm-2.control-label(for="comments") Comments
+					div.col-sm-8
+						textarea.form-control(id="comments", type="text", name="comments", placeholder="Comments")
+				div.form-group
+					label.col-sm-2.control-label(for="active") Active
+					div.col-sm-1
+						input.input-sm.form-control(id="active", type="checkbox", name="active", checked="true", value=1)
+				
+				div.form-group
+					div.col-sm-offset-2.col-sm-10
+						div.btn-toolbar
+							button.btn.btn-primary(type="submit") Save
+							button.btn.btn-default(id="cancel", type="button", onclick="history.go(-1);") Cancel

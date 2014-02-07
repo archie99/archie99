@@ -1,0 +1,32 @@
+doctype 5
+html
+	head
+		title= 'VISITS'
+		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css')
+		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css')
+		link(rel='stylesheet', href='/datepicker/css/datepicker.css')
+		link(rel='stylesheet', href='/bootstrap-select-master/bootstrap-select.css')
+		link(rel='stylesheet', href='/dhtmlxScheduler/codebase/dhtmlxscheduler.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')		
+		script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+		script(src="http://yui.yahooapis.com/3.14.1/build/yui/yui-min.js")
+		script(src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js")
+		script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
+		script(src="/datepicker/js/bootstrap-datepicker.js")
+		script(src="/bootstrap-select-master/bootstrap-select.js")
+		script(src="/dhtmlxScheduler/codebase/dhtmlxscheduler.js")
+		script(src="/javascripts/helper.js")
+		//script(src="js/jquery.confirm.js")		
+	body
+		//input#rollButton(type="button", value="Roll")
+		//p.temp
+		br/
+		div.container.well.well-sm				
+			ul.nav.nav-pills.nav-justified
+				li(id='navvisits')
+					a(href="/index.html") Calendar
+				li(id='navclients')
+					a(href="/clients") Clients
+				li(id='navhome')
+					a(href="/") Settings				
+		block content		

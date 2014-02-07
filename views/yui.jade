@@ -1,0 +1,45 @@
+extends layout
+
+block content
+	h1= title
+	p Welcome to #{title}
+	br/
+	br/
+	input#btn1(type="button", value="btn1")
+	input#btn2(type="button", value="btn2")
+	input#ajax(type="button", value="ajax")
+	input#alert(type="button", value="alert")
+	div#tmp help
+	a(href="/years") All Years
+	script.
+		YUI().use('node', 'event', 'transition','node-load',  'gallery-dialog', function (Y){
+			Y.one('#btn1').on('click', function(){
+				Y.one('#tmp').setHTML('<p>btn1 clicked</p>');
+				Y.one('#tmp').addClass('highlight');
+			});
+
+			Y.one('#btn2').on('click', function(){
+				// Fade away.
+				Y.one('#tmp').transition({
+					duration: 2, // seconds
+					opacity : 0
+				});
+				// Shrink to nothing.
+				Y.one('#tmp').transition({
+					duration: 2, // seconds
+					width   : 0,
+					height  : 0
+				});								
+			});		
+			
+			Y.one('#ajax').on('click', function(){
+				Y.one('#tmp').load('/a').setStyle('color','red');
+			});
+
+			Y.one('#alert').on('click', function(){
+				var d = new Y.Dialog().alert('You have an Alert!', null, alertCallback);
+					
+				function alertCallback() {Y.log('Alert callback has fired.');}
+			});
+				
+		});		

@@ -11,13 +11,18 @@ block content
 			h4 
 				div.container.well(style="width:100%;")
 					- var date = event.start_date.toLocaleDateString();	
+					- var year = event.start_date.getFullYear();
+					- var month = event.start_date.getMonth() + 1;
+					- var day = event.start_date.getDate();
+					- var calendardate = year + "," + month + "," + day;
 					- var eventcomments = event.comments.replace(/\n/g, '<br>');
 					div.row
-						div.col-lg-1
-							a.btn.btn-primary.btn-xs(href="/index.html" data-toggle="tooltip" data-placement="bottom" title="Back to Calendar")					
-								span.glyphicon.glyphicon-calendar						
-							a.btn.btn-primary.btn-xs(href="/index.html" data-toggle="tooltip" data-placement="bottom" title="Back to Client Visits")					
+						div.col-lg-1							
+							a.btn.btn-primary.btn-xs(href="/calendar/#{calendardate}" data-toggle="tooltip" data-placement="bottom" title="Back to Calendar")
 								span.glyphicon.glyphicon-calendar
+							&nbsp;						
+							a.btn.btn-primary.btn-xs(href="/_client/#{event.clientid}/events" data-toggle="tooltip" data-placement="bottom" title="Back to Client Visits")					
+								span.glyphicon.glyphicon-list
 					div.row
 						div.col-lg-3
 							h3(id="clientname")										

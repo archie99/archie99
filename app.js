@@ -69,6 +69,7 @@ app.get('/event/:eventid/services/delete', routes.deleteservices());
 //CALENDAR:
 app.get('/data', routes.getdata());
 app.post('/data', routes.postdata());
+app.get('/calendar/:dt', routes.showcalendar());
 //app.get('/a', routes.ajax);
 //app.get('/yui', routes.yui);
 

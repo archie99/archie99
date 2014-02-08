@@ -111,6 +111,10 @@ function NewService(eventid){
         });        
 }
 
+function ShowCalendar(dt){
+     alert(dt);   
+    
+}
 
 function SaveService(eventid){
             var serviceid = $("button.saveservice").attr("id");

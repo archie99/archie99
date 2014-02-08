@@ -298,6 +298,12 @@ exports.clientevents = function(){
         };    
     };
 
+exports.showcalendar = function(){
+    return function(req, res){
+        var dt = req.params.dt;
+        res.render('calendar', {'dt': dt});
+    };
+};
 
 //exports.eventservices = function(){
 //    return function(req,res){

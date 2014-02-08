@@ -1961,6 +1961,7 @@
     <Compile Include="public\dhtmlxScheduler\codebase\ext\dhtmlxscheduler_year_view.js" />
     <Compile Include="public\modules\db.js" />
     <Compile Include="routes\index.js" />
+    <Content Include="views\calendar.jade" />
     <Content Include="views\clientevents.jade" />
     <Content Include="views\clients.jade" />
     <Content Include="views\eventservices.jade" />

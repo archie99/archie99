@@ -30,7 +30,7 @@
         scheduler.config.last_hour = 21;
 		scheduler.config.xml_date="%Y-%m-%d %H:%i";
 		//scheduler.init('scheduler_here', new Date(), "month");
-		scheduler.init('scheduler_here', new Date(), "week");			
+		scheduler.init('scheduler_here', new Date(), "week");
 		scheduler.templates.xml_date = function(value){ return new Date(value); };
 		scheduler.load("/data", "json");
 		var dp = new dataProcessor("/data");

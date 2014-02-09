@@ -35,25 +35,30 @@
                 var total = 0;               
                 $.each(data, function(key, val){
                     total = total + val.price;
-                    var items = [];
-                        //items.push("<div class='col-lg-2'>" + val._id + "</div>" );    
-                        items.push("<div class='col-lg-2'>" + val.service + "</div>" );
-                        items.push("<div class='col-lg-2' style='float:left;'>" + val.price + "</div>" );
+                    var items = [];                        
+                        items.push("<div class='col-sm-3'>" + val.service + "</div>" );
+                        items.push("<div class='col-sm-2' style='float:left;'>$ " + val.price + ".00</div>" );
                         var comments = val.comments.replace(/\n/g, '<br>');
-                        items.push("<div class='col-lg-8' style='overflow: auto;' >" + comments + "</div>" );
+                        items.push("<div class='col-sm-7' style='overflow: auto;' >" + comments + "</div>" );
                         $("<div/>", { 
-                    "class": "row",
-                    //html: items.join( "" )}).appendTo("body");                    
+                    "class": "row",                    
                     html: items.join( "" )}).appendTo(p);
                 }); 
                     var rowtotal = [];
-                    rowtotal.push("<div class='col-lg-2' style='float:left; font-weight:bold;'>TOTAL: </div>");
-                    rowtotal.push("<div class='col-lg-1' style='float:left; font-weight:bold;'>" + total + "</div>");
+                    rowtotal.push("<br/><div class='col-sm-3' style='float:left; font-weight:bold;'>TOTAL: </div>");
+                    rowtotal.push("<div class='col-sm-2' style='float:left; font-weight:bold;'>$ " + total + ".00</div>");
                      $("<div/>", { 
                     "class": "row",
                     html: rowtotal.join( "" )}).appendTo(p);                    
-                    });                
-            $("div[event=" + this.id + "]").collapse('toggle');                    
+                    });                                 
+            var btn = $("a[id=" + this.id + "]");
+            if ($(btn).hasClass("hidden")){                
+                btn.removeClass("hidden").addClass("visible");
+                }
+            else{                
+                 btn.removeClass("visible").addClass("hidden");
+                }
+            $("div[event=" + this.id + "]").collapse('toggle');             
 		});  
             
         $("button.deleteservice").click(function(){

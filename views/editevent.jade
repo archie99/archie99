@@ -6,59 +6,58 @@ block content
 		$('#navvisits').removeClass('active');	
 		//alert("#{event.clientid}" );			
 		GetClientName("#{event.clientid}");			
-	div.container.well.well-lg
+	div.container.well.well-sm
 		div.content			
 			h4 
-				div.container.well(style="width:100%;")
+				div.container.well.well-sm(style="width:100%;")
 					- var date = event.start_date.toLocaleDateString();	
 					- var year = event.start_date.getFullYear();
 					- var month = event.start_date.getMonth() + 1;
 					- var day = event.start_date.getDate();
 					- var calendardate = year + "," + month + "," + day;
-					- var eventcomments = event.comments.replace(/\n/g, '<br>');
+					- var eventcomments = event.comments.replace(/\n/g, '<br>');					
 					div.row
-						div.col-lg-1							
-							a.btn.btn-primary.btn-xs(href="/calendar/#{calendardate}" data-toggle="tooltip" data-placement="bottom" title="Back to Calendar")
-								span.glyphicon.glyphicon-calendar
-							&nbsp;						
-							a.btn.btn-primary.btn-xs(href="/_client/#{event.clientid}/events" data-toggle="tooltip" data-placement="bottom" title="Back to Client Visits")					
-								span.glyphicon.glyphicon-list
+						div.col-sm-3
+							h3(id="clientname")	
+						div.col-sm-1.col-sm-offset-7
+							a.btn.btn-primary.btn-md.pull-right(href="/calendar/#{calendardate}" data-toggle="tooltip" data-placement="bottom" title="Back to Calendar")
+								span.glyphicon.glyphicon-calendar												
+						div.col-sm-1
+							a.btn.btn-primary.btn-md.pull-right(href="/_client/#{event.clientid}/events" data-toggle="tooltip" data-placement="bottom" title="Back to Client Visits")					
+								span.glyphicon.glyphicon-list									
 					div.row
-						div.col-lg-3
-							h3(id="clientname")										
-					div.row
-						div.col-lg-3 #{date}
-						div.col-lg-3 #{event.text}
-						div.col-lg-5(style="overflow: auto;") !{eventcomments}
-						div.col-lg-1
-							button.editevent.btn.btn-primary.btn-sm(id=event._id, onclick='EditEvent("#{event.clientid}");' data-toggle="tooltip" data-placement="bottom" title="Edit the Visit")
+						div.col-sm-3 #{date}
+						div.col-sm-3 #{event.text}
+						div.col-sm-5(style="overflow: auto;") !{eventcomments}
+						div.col-sm-1
+							button.editevent.btn.btn-primary.btn-md.pull-right(id=event._id, onclick='EditEvent("#{event.clientid}");' data-toggle="tooltip" data-placement="bottom" title="Edit Visit Details")
 								span.glyphicon.glyphicon-edit
-			div.container.well(style="width:90%; float:right;")
+			div.container.well.well-sm(style="width:95%; float:right;")
 				- var total = 0;
 				each service, i in services
 					- total = total + service.price;
 					- var servicecomments = service.comments.replace(/\n/g, '<br>');	
 					div.row																	
-						div.col-lg-3 
+						div.col-sm-2 
 							div(style="float:left;") #{service.service}
-						div.col-lg-1
+						div.col-sm-2
 							div(style="float:right;") $ #{service.price}.00
-						div.col-lg-1
-						div.col-lg-5(style="overflow: auto;") !{servicecomments}						
-						div.col-lg-1
-							button.deleteservice.btn.btn-primary.btn-xs(id=service._id, event=event._id data-toggle="tooltip" data-placement="bottom" title="Delete this Record")
+						div.col-sm-1
+						div.col-sm-5(style="overflow: auto;") !{servicecomments}						
+						div.col-sm-1
+							button.deleteservice.btn.btn-primary.btn-md.pull-right(id=service._id, event=event._id data-toggle="tooltip" data-placement="bottom" title="Delete this Record")
 								span.glyphicon.glyphicon-remove(style="color: #fe6666;")
-						div.col-lg-1
-							button.editservice.btn.btn-primary.btn-xs(id=service._id data-toggle="tooltip" data-placement="bottom" title="Edit this Record")
+						div.col-sm-1
+							button.editservice.btn.btn-primary.btn-md.pull-right(id=service._id data-toggle="tooltip" data-placement="bottom" title="Edit this Record")
 								span.glyphicon.glyphicon-edit
 					hr(style='border-bottom: 1px solid #d0d0d0')						
 				div.row
-					div.col-lg-3
+					div.col-sm-2
 						div(style="font-weight:bold;") TOTAL: 
-					div.col-lg-1						
+					div.col-sm-2						
 						div(style="float:right; font-weight:bold;") $ #{total}.00	
-					div.col-lg-1.col-lg-offset-7
-						button.newservice.btn.btn-primary.btn-xs(onclick='NewService("#{event._id}");' data-toggle="tooltip" data-placement="bottom" title="Add new Record to this Visit")
+					div.col-sm-1.col-sm-offset-7
+						button.newservice.btn.btn-primary.btn-md.pull-right(onclick='NewService("#{event._id}");' data-toggle="tooltip" data-placement="bottom" title="Add new Record to this Visit")
 								span.glyphicon.glyphicon-plus-sign
 				br/
 				
@@ -74,11 +73,11 @@ block content
 						div.modal-body
 							div.container.well(style="width:100%;")
 								div.row(style="vertical-align: middle;")
-									div.col-lg-3
+									div.col-sm-3
 										input.form-control(id="serviceService", type="text", name="service")	
-									div.col-lg-3
+									div.col-sm-3
 										input.form-control(id="priceService", type="text", name="price")		
-									div.col-lg-6(style="overflow: auto;")	
+									div.col-sm-6(style="overflow: auto;")	
 										textarea.form-control(id="commentsService", type="text", name="comments", style="overflow: auto;") 
 						div.modal-footer
 							button#cancel.btn.btn-default(type="button", data-dismiss="modal") Cancel
@@ -95,12 +94,12 @@ block content
 							div.container.well(style="width:100%;")
 								div.row(style="vertical-align: middle;")										
 									
-									div.col-lg-3
+									div.col-sm-3
 										select.selectpicker(data-live-search="true" data-size="auto")
 											
-									div.col-lg-3
+									div.col-sm-3
 										input.form-control(id="textEvent", type="text", name="text", value="#{event.text}")
-									div.col-lg-6(style="overflow: auto;") 
+									div.col-sm-6(style="overflow: auto;") 
 										textarea.form-control(id="commentsEvent", type="html", name="comments", style="overflow: auto;") !{event.comments}
 						div.modal-footer
 							button#cancel.btn.btn-default(type="button", data-dismiss="modal") Cancel

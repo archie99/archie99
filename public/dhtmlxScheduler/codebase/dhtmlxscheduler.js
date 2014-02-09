@@ -1264,7 +1264,7 @@ scheduler.set_actions = function () {
 		scheduler._ignore_next_click || scheduler._on_mouse_up(a || event)
 	};
 	this._obj.ondblclick =
-	function (a) {
+	function (a) {        
 		scheduler._on_dbl_click(a || event)
 	};
 	this._obj.oncontextmenu = function (a) {
@@ -1422,8 +1422,10 @@ scheduler._on_dbl_click = function (a, b) {
 		case "dhx_grid_event":
 		case "dhx_cal_event_line":
 		case "dhx_cal_event_clear":
+            
 			var d =
 				this._locate_event(b);
+                //window.location.href="/event/" + d; //arkadiy
 			if (!this.callEvent("onDblClick", [d, a]))
 				break;
 			this.config.details_on_dblclick || this._table_view || !this.getEvent(d)._timed || !this.config.select ? this.showLightbox(d) : this.edit(d);

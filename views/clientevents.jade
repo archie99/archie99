@@ -10,7 +10,7 @@ block content
 	div.container.well.well-lg
 		div.content
 			- var clientname = cl.firstname + ' ' + cl.lastname;
-			h4 EVENTS: #{clientname}
+			h4 VISITS: #{clientname}
 			each event, i in events
 				- var eventcomments = event.comments.replace(/\n/g, '<br>');
 				- var d = event.start_date;				
@@ -19,19 +19,17 @@ block content
 						div.panel-heading
 							div.container
 								div.row												
-									div.col-lg-3 #{event.start_date.toLocaleDateString()}
-									div.col-lg-2 #{event.text}
-									div.col-lg-5(style="overflow: auto;") !{eventcomments}						
-									div.col-lg-1
-										button.showservices.btn.btn-primary.btn-sm(id=event._id)
+									div.col-sm-3 #{event.start_date.toLocaleDateString()}
+									div.col-sm-2 #{event.text}
+									div.col-sm-4(style="overflow: auto;") !{eventcomments}	
+									div.col-sm-1
+										a.btn.btn-primary.btn-md.pull-right.hidden(id=event._id,  href="/event/#{event._id}" data-toggle="tooltip" data-placement="bottom" title="Edit Visit")		
+												span.glyphicon.glyphicon-edit					
+									div.col-sm-1
+										button.showservices.btn.btn-primary.btn-md(id=event._id data-toggle="tooltip" data-placement="bottom" title="Show Visit Details")
 											span.glyphicon.glyphicon-list									
 							br/						
 							div.panel-collapse.collapse(event=event._id)	
-								div.container.well(style="position: relative; left: 30px; width: 90%;")	
-									div.panel-body	
-										div												
-											a.btn.btn-primary.btn-xs(href="/event/#{event._id}")					
-												span.glyphicon.glyphicon-edit
-											br/
-											br/											
+								div.container.well(style="position: relative; left: 10%; width: 70%;")	
+									div.panel-body																
 										div(eventresult=event._id)

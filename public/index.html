@@ -14,11 +14,18 @@
     <script src="/javascripts/helper.js"></script>
 
 <style type="text/css" media="screen">
-	html, body{
-		margin:0px;
-		padding:0px;
-		height:100%;
-		overflow:hidden;
+    html, body
+    {
+        margin: 0px;
+        padding: 0px;
+        height: 100%;
+        overflow: hidden;
+    }
+    .locate_button{
+    background-image:url('/dhtmlxScheduler/codebase/imgs_glossy/icon.png');
+    background-position: 0px 0px;
+    height:16px;
+    width:16px;
 	}	
 </style>
 
@@ -28,7 +35,9 @@
     function init() {
         scheduler.config.first_hour = 9;
         scheduler.config.last_hour = 21;
-		scheduler.config.xml_date="%Y-%m-%d %H:%i";
+        scheduler.config.xml_date = "%Y-%m-%d %H:%i";
+        scheduler.config.buttons_left = ["dhx_save_btn", "dhx_cancel_btn", "locate_button"]
+        scheduler.locale.labels["locate_button"] = "Location";
 		//scheduler.init('scheduler_here', new Date(), "month");
 		scheduler.init('scheduler_here', new Date(), "week");
 		scheduler.templates.xml_date = function(value){ return new Date(value); };

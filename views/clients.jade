@@ -9,27 +9,32 @@ block content
 		$('#navvisits').removeClass('active');	
 	div.container.well.well-lg
 		div.content
-			h3 CLIENTS
-			div.row
-				div.col-xs-2
-					form.form-search
-						div.input-group							
-							input#search.form-control(type="text")
-							span.input-group-btn
-								button#search.btn.btn-default.input-append(type="button")
-									span.glyphicon.glyphicon-search
-				div.col-xs-10
-					button.btn.btn-default.pull-right(id="newclient", type="submit", onclick="location.href='/newclient'") Add New Client
-			br/
-			table.table
-				tbody
-					each client, i in clients
-						tr							
-							td #{client.firstname}
-							td #{client.lastname}
-							td #{client.cell}
-							td #{client.email}
-							td 
-								a(href="/_client/#{client._id}/events") Visits
-							td
-								a(href="/_client/#{client._id}") Edit
+			div.container.well.well-lg(style="left: 0px; width: 95%;")
+				h3 CLIENTS
+				div.row
+					div.col-sm-5
+						form.form-search
+							div.input-group							
+								input#search.form-control(type="text")
+								span.input-group-btn
+									button#search.btn.btn-default.input-append(type="button")
+										span.glyphicon.glyphicon-search
+					div.col-sm-7					
+						button.btn.btn-primary.btn-md.pull-right(data-toggle="tooltip" data-placement="bottom" title="Add new Client", onclick="location.href='/newclient'")
+							span.glyphicon.glyphicon-plus-sign			
+			div.container.well.well-lg(style="left: 0px; width: 95%;")	
+				each client, i in clients
+					div.row
+						div.col-sm-3 #{client.firstname}
+						div.col-sm-2 #{client.lastname}
+						div.col-sm-2 #{client.cell}
+						div.col-sm-3 #{client.email}
+						div.col-sm-1 
+							//a(href="/_client/#{client._id}/events") Visits
+							button.btn.btn-primary.btn-md.pull-right(data-toggle="tooltip" data-placement="bottom" title="Client Visits", onclick="location.href='/_client/#{client._id}/events'")
+								span.glyphicon.glyphicon-list
+						div.col-sm-1 
+							//a(href="/_client/#{client._id}") Edit
+							button.btn.btn-primary.btn-md.pull-right(data-toggle="tooltip" data-placement="bottom" title="Edit Client", onclick="location.href='/_client/#{client._id}'")
+								span.glyphicon.glyphicon-edit
+					hr(style='border-bottom: 1px solid #d0d0d0')

@@ -158,6 +158,57 @@ exports.addservice = function() {
     }
 };
 
+//exports.cloneevent = function(){
+//    return function(req,res){
+//        var colEvents = dbmodule.Events; 
+//            colEvents.findOne({'_id': req.params.eventid}, null, {},function(e, doc){
+//                var com = typeof(doc.comments);
+//                if(com == 'undefined'){                    
+//                    doc.comments = "no comments";                   
+//                    } 
+//                var newEvent = new colEvents;
+//                newEvent.start_date = doc.start_date;
+//                newEvent.end_date = doc.end_date;
+//                newEvent.text = doc.text;
+//                newEvent.clientid = doc.clientid;
+//                newEvent.comments = doc.comments;
+//                newEvent.save(function(err, result){
+//                    if (err){console.log( err);}
+//                    else {
+//                        var colServices = dbmodule.Services;
+//                        var eventid = result.id;        
+//                        colServices.find({'eventid': eventid}, null, {'sort':{'_id':1}},function(e, docs){
+//                            for (var i=0; i<docs.length; i++){
+//                                var newService = new colServices;
+//                                newService.eventid = docs[i].eventid;
+//                                newService.service = docs[i].service;
+//                                newService.price = docs[i].price;
+//                                newService.comments = docs[i].comments;
+//                                newService.save(function(err, result){
+//                                    if (err){
+//                                        //res.send("There was a problem adding the information to the database.");
+//                                        console.log( err);
+//                                    }
+//                                    else {
+//                                        //res.location("event/" + eventid);
+//                                        //res.redirect("event/" + eventid);
+//                                        //res.send(result);
+//                                        console.log(result);
+//                                    }
+//                                });
+//                                }
+//                            });
+                        
+//                        console.log(result);}
+//                    });          
+                
+//            });   
+
+        
+//        };    
+//    };
+
+
 exports.deleteservice = function() {
     return function(req, res){
     var colServices = dbmodule.Services;
@@ -304,16 +355,6 @@ exports.showcalendar = function(){
         res.render('calendar', {'dt': dt});
     };
 };
-
-//exports.eventservices = function(){
-//    return function(req,res){
-//        var colServices = dbmodule.Services;
-//        var eventid = req.params.eventid;
-//        colServices.find({'eventid': eventid},null, {'sort':{'_id':1}},function(e, docs){
-//               res.render('eventservices', {'services': docs});
-//            });           
-//        };    
-//    };
 
 exports.eventservicesj = function(){
     return function(req,res){

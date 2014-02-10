@@ -19,12 +19,13 @@ block content
 					div.row
 						div.col-sm-3
 							h3(id="clientname")	
-						div.col-sm-1.col-sm-offset-7
-							a.btn.btn-primary.btn-md.pull-right(href="/calendar/#{calendardate}" data-toggle="tooltip" data-placement="bottom" title="Back to Calendar")
-								span.glyphicon.glyphicon-calendar												
+						div.col-sm-1.col-sm-offset-7												
+							a#list.btn.btn-primary.btn-md.pull-right(href="/_client/#{event.clientid}/events" data-toggle="tooltip" data-placement="bottom" title="Back to Client Visits" disabled="disabled")
+									span.glyphicon.glyphicon-list							
 						div.col-sm-1
-							a.btn.btn-primary.btn-md.pull-right(href="/_client/#{event.clientid}/events" data-toggle="tooltip" data-placement="bottom" title="Back to Client Visits")					
-								span.glyphicon.glyphicon-list									
+							a.btn.btn-primary.btn-md.pull-right(href="/calendar/#{calendardate}" data-toggle="tooltip" data-placement="bottom" title="Back to Calendar")
+								span.glyphicon.glyphicon-calendar
+					br/		
 					div.row
 						div.col-sm-3 #{date}
 						div.col-sm-3 #{event.text}
@@ -65,19 +66,35 @@ block content
 
 			//MODAL: EDIT SERVICE
 			div.modal.container-wellfade(id="ModalService" tabindex="-1" role="dialog" aria-labelledby="ModalServiceLabel" aria-hidden="true")
-				div.modal-dialog
+				div.modal-dialog(style="width: 80%; margin: 10% 10% 10% 10%;")
 					div.modal-content
 						div.modal-header
 							button.close(type="button", data-dismiss="modal" aria-hidden="true") &times
 							h4.modal-title(id="ModalServiceLabel")
 						div.modal-body
 							div.container.well(style="width:100%;")
-								div.row(style="vertical-align: middle;")
+								div.row
 									div.col-sm-3
-										input.form-control(id="serviceService", type="text", name="service")	
-									div.col-sm-3
+										//input.form-control(id="serviceService", type="text", name="service")	
+										select#services.selectpicker.show-menu-arrow(data-size='auto')
+											option NOT SELECTED
+											option BROWS
+											option COLOR
+											option CONSULTATION
+											option CUP STREAKS
+											option FOIL STREAKS
+											option HAIRCUT
+											option LASHES
+											option PRODUCTS
+											option ROOTS
+											option STYLE
+											option TIPS
+											option TONER
+											option TREATMENT
+											option TRIM
+									div.col-sm-2
 										input.form-control(id="priceService", type="text", name="price")		
-									div.col-sm-6(style="overflow: auto;")	
+									div.col-sm-7(style="overflow: auto;")	
 										textarea.form-control(id="commentsService", type="text", name="comments", style="overflow: auto;") 
 						div.modal-footer
 							button#cancel.btn.btn-default(type="button", data-dismiss="modal") Cancel
@@ -95,7 +112,7 @@ block content
 								div.row(style="vertical-align: middle;")										
 									
 									div.col-sm-3
-										select.selectpicker(data-live-search="true" data-size="auto")
+										select#clients.selectpicker(data-live-search="true" data-size="auto")
 											
 									div.col-sm-3
 										input.form-control(id="textEvent", type="text", name="text", value="#{event.text}")

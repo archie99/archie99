@@ -1425,10 +1425,11 @@ scheduler._on_dbl_click = function (a, b) {
             
 			var d =
 				this._locate_event(b);
-                //window.location.href="/event/" + d; //arkadiy
-			if (!this.callEvent("onDblClick", [d, a]))
-				break;
-			this.config.details_on_dblclick || this._table_view || !this.getEvent(d)._timed || !this.config.select ? this.showLightbox(d) : this.edit(d);
+                window.location.href="/event/" + d; //arkadiy open event from month view
+            //arkadiy: the following code commented to not open lightbox:
+			//if (!this.callEvent("onDblClick", [d, a]))
+			//	break;
+			//this.config.details_on_dblclick || this._table_view || !this.getEvent(d)._timed || !this.config.select ? this.showLightbox(d) : this.edit(d);
 			break;
 		case "dhx_time_block":
 		case "dhx_cal_container":
@@ -3515,6 +3516,14 @@ scheduler._init_lightbox_events = function () {
 			case "dhx_save_btn":
 				scheduler.save_lightbox();
 				break;
+            /////////////////
+            //arkadiy CLONE event:
+            //case "clone_button"://arkadiy                
+            //    alert("clone clicked: " + scheduler._lightbox_id);//arkadiy
+            //    window.location.href="/event/" + scheduler._lightbox_id + "/clone"; //arkadiy
+            //    //scheduler.hide_lightbox(); //arkadiy
+            //    break;//arkadiy
+            ////////////////
 			case "dhx_delete_btn":
 				var c = scheduler.locale.labels.confirm_deleting;
 				scheduler._dhtmlx_confirm(c, scheduler.locale.labels.title_confirm_deleting, function () {           

@@ -21,11 +21,11 @@
         height: 100%;
         overflow: hidden;
     }
-    .locate_button{
-    background-image:url('/dhtmlxScheduler/codebase/imgs_glossy/icon.png');
-    background-position: 0px 0px;
-    height:16px;
-    width:16px;
+    .clone_button{
+    background-image:url('/dhtmlxScheduler/codebase/imgs_glossy/export_ical.png');
+    background-position: center center;
+    height:5px;
+    width:20px;
 	}	
 </style>
 
@@ -36,8 +36,13 @@
         scheduler.config.first_hour = 9;
         scheduler.config.last_hour = 21;
         scheduler.config.xml_date = "%Y-%m-%d %H:%i";
-        scheduler.config.buttons_left = ["dhx_save_btn", "dhx_cancel_btn", "locate_button"]
-        scheduler.locale.labels["locate_button"] = "Location";
+        //scheduler.config.buttons_left = ["dhx_save_btn", "dhx_cancel_btn", "clone_button"]
+        //scheduler.locale.labels["clone_button"] = "Clone";
+        //scheduler.attachEvent("onLightboxButton", function (button_id, node, e) {
+        //    if (button_id == "clone_button") {
+        //        alert("clone button clicked for event:" + node.event_id);
+        //    }
+        //});
 		//scheduler.init('scheduler_here', new Date(), "month");
 		scheduler.init('scheduler_here', new Date(), "week");
 		scheduler.templates.xml_date = function(value){ return new Date(value); };

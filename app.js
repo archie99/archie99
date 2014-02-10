@@ -56,6 +56,7 @@ app.post('/addclient', routes.addclient);
 app.get('/event/:eventid', routes.editevent());
 //app.get('/event/:eventid/services',routes.eventservices());
 app.get('/event/:eventid/servicesj', routes.eventservicesj());
+//app.get('/event/:eventid/clone', routes.cloneevent());
 app.post('/event/:eventid/update', routes.updateevent());
 
 //SERVICE:

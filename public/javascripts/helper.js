@@ -89,12 +89,21 @@
             p.empty();          
             var items = [];
             $.get(url, function(data){                 
-                $("#serviceService").val(data.service);
+                var service = data.service;                
                 $("#priceService").val(data.price);
                 $("#commentsService").val(data.comments);
                 $("#ModalServiceLabel").text("EDIT SERVICE: ");
                 $("#ModalService").modal('show'); 
-                $("button.saveservice").attr("id", data._id);                  
+                $("button.saveservice").attr("id", data._id);  
+                var dd = $("select#services.selectpicker");
+                if (service != ""){
+                $("option:contains(" + service + ")").attr("selected", "selected");
+                }
+                else{
+                $("option:contains('NOT SELECTED')").attr("selected", "selected");   
+                }
+                dd.selectpicker(); 
+                dd.selectpicker('render'); 
             });  
             
             $("button#cancel").click(function(){
@@ -103,16 +112,19 @@
         });        
 });
 
-function NewService(eventid){
-    //alert(eventid);    
-    //window.location.href="/event/" + eventid + "/addservice";      
+function NewService(eventid){      
     $.get("/event/" + eventid + "/addservice", function(data){
-        $("#serviceService").val(data.service);
+        //$("#serviceService").val(data.service);
+        var service = data.service;
         $("#priceService").val(data.price);
         $("#commentsService").val(data.comments);
         $("#ModalServiceLabel").text("EDIT SERVICE: ");
         $("#ModalService").modal('show'); 
-        $("button.saveservice").attr("id", data._id);           
+        $("button.saveservice").attr("id", data._id);   
+        var dd = $("select#services.selectpicker");
+        $("option:contains('NOT SELECTED')").attr("selected", "selected");                   
+        dd.selectpicker(); 
+        dd.selectpicker('render');         
         });        
 }
 
@@ -124,23 +136,23 @@ function ShowCalendar(dt){
 function SaveService(eventid){
             var serviceid = $("button.saveservice").attr("id");
             var url = "/service/" + serviceid + "/update";            
-            var service = $("#serviceService").val();
+            //both of the following works:
+            var service = $("li.selected a span").text();
+            //var service = $("button.selectpicker[data-id='services']").attr("title")
             var price = $("#priceService").val();
-            var comments = $("#commentsService").val();
-            //var id = this.id;
+            var comments = $("#commentsService").val();            
             $.post(url, {"id":serviceid, "service": service, "price": price, "comments": comments, "eventid": eventid}, function(data){                 
             window.location.href="/event/" + eventid;                    
             });                                
         }
 
 
-function EditEvent(clientid){ 
-    //alert(comments);    
+function EditEvent(clientid){      
     var url = "/_clientjson/" + clientid;
     $.get(url, function(clientdata){ 
         //Fill clients dropdown with clients:                 
         $.get("/clientsjson", function(data){
-            var dd = $("select.selectpicker");
+            var dd = $("select#clients.selectpicker");
             dd.empty();        
             var items = [];
             $.each(data,function(key, value){   
@@ -151,8 +163,8 @@ function EditEvent(clientid){
                else{items.push("<option id=" + value._id + "> " + value.firstname + " " + value.lastname   + "</>");}
             });
             dd.html(items.join(""));
-            $(".selectpicker").selectpicker(); 
-            $(".selectpicker").selectpicker('render'); //render to activate selected client
+            $("#clients.selectpicker").selectpicker(); 
+            $("#clients.selectpicker").selectpicker('render'); //render to activate selected client
             //set id for each client li in dropdown:
             $("ul.dropdown-menu li").each(function(){
                 var li = $(this);
@@ -167,13 +179,9 @@ function EditEvent(clientid){
 function SaveEvent(eventid){
     var clientid = $("li.selected").attr("id");
     var text = $("#textEvent").val();
-    var comments = $("#commentsEvent").val();      
-    //alert(comments);         
-    //var comments = $("#commentsEvent").html();  
-              
+    var comments = $("#commentsEvent").val();                   
         var url = "/event/" + eventid + "/update";    
-        $.post(url, {"eventid":eventid, "clientid": clientid, "text": text, "comments": comments}, function(data){ 
-           //window.location.href="/source/edit/event/" + eventid;                    
+        $.post(url, {"eventid":eventid, "clientid": clientid, "text": text, "comments": comments}, function(data){   
            window.location.href="/event/" + eventid;                    
             });   
     }
@@ -181,18 +189,15 @@ function SaveEvent(eventid){
 function GetClientName(clientid){
     if (clientid == ""){
         var clientname = "You have to assign Client for this Event!";
-        alert(clientname);
-        //$("#clientname").text(clientname);
-    }
-    else{
-        //alert(clientid);
+        alert(clientname);      }
+    else{        
         var url = "/_clientjson/" + clientid;
-        $.get(url, function(clientdata){ 
-            //alert(err);
-            var clientname = clientdata.firstname + " " + clientdata.lastname;
-            //alert(clientname);
-            $("#clientname").text(clientname);
-         });
+        $.get(url, function(clientdata){             
+            var clientname = clientdata.firstname + " " + clientdata.lastname;            
+            $("#clientname").text(clientname);  
+            //$("#list").removeClass("hidden").addClass("visible");                 
+            $("#list").removeAttr("disabled");
+         });         
     }
 }	
 

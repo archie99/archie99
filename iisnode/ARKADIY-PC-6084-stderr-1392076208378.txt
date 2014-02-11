@@ -1,0 +1,10 @@
+Application has thrown an uncaught exception and is terminated:
+TypeError: Cannot call method 'send' of undefined
+    at Server.<anonymous> (C:\Users\arkadiy\Documents\Visual Studio 2012\Projects\NODE-JJ\N-Ex-Mngs-YUI-Visits\app.js:80:7)
+    at Server.g (events.js:175:14)
+    at Server.EventEmitter.emit (events.js:92:17)
+    at net.js:1052:10
+    at process._tickCallback (node.js:415:13)
+    at Function.Module.runMain (module.js:499:11)
+    at startup (node.js:119:16)
+    at node.js:901:3

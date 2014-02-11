@@ -7,6 +7,10 @@
     "name": "arkadiy",
     "email": ""
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/archie99/archie99.git"
+  },
   "dependencies": {
     "express": "3.4.4",
     "jade": "*",
@@ -15,4 +19,9 @@
     "mongoskin": "~0.6.1",
     "twitter-bootstrap-3.0.0": "~3.0.0"
   }
+  {
+  "engines": {
+    "node": "0.10.x"
+  }
+}
 }

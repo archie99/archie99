@@ -1,1 +1,0 @@
-[90mGET /node/events/app.js [33m404 [90m3ms[0m

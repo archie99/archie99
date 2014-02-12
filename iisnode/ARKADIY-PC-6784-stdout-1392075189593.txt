@@ -1,2 +1,0 @@
-Express server listening on port \\.\pipe\3860d81e-aedc-4bfb-8148-4b157def2d43
-[90mGET /node/events/app.js [33m404 [90m4ms[0m

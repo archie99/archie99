@@ -401,7 +401,13 @@ exports.clientevents = function(){
 
 exports.showcalendar = function(){
     return function(req, res){
-        var dt = req.params.dt;
+        var dt = "";
+        if(req.params.dt == "today"){
+            dt = new Date().toUTCString();            
+        }
+        else{
+            var dt = req.params.dt;
+        }
         res.render('calendar', {'dt': dt});
     };
 };

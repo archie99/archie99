@@ -1703,8 +1703,8 @@ scheduler._render_x_header = function (a, b, c, d) {
 	var f = this._cols[a] - 1;
 	this._mode == "month" && a === 0 && this.config.left_border && (e.className += " dhx_scale_bar_border", b += 1);
 	this.set_xy(e, f, this.xy.scale_height - 2, b, 0);
-	e.innerHTML = this.templates[this._mode + "_scale_date"](c, this._mode);
-	d.appendChild(e)
+    e.innerHTML = this.templates[this._mode + "_scale_date"](c, this._mode);    
+    d.appendChild(e)
 };
 scheduler._reset_scale = function () {
 	if (this.templates[this._mode + "_date"]) {
@@ -2261,7 +2261,7 @@ scheduler.init_templates = function () {
 		},
 		day_scale_date : b(c.default_date),
 		month_scale_date : b(c.week_date),
-		week_scale_date : b(c.day_date),
+		week_scale_date : b(c.day_date),            
 		hour_scale : b(c.hour_date),
 		time_picker : b(c.hour_date),
 		event_date : b(c.hour_date),

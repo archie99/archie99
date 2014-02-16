@@ -1,5 +1,5 @@
 ﻿$(document).ready(function(){
-	    
+       	    
         $("#rollButton").click(function() {
 	         //$("div.parent").toggle(200);  
           $.get("/a",function(data,status){ $("p.temp").text(data);});
@@ -25,6 +25,7 @@
             }
         });
         
+       
 
         $("button.showservices").click(function(){
 			var id = this.id;
@@ -179,9 +180,16 @@ function EditEvent(clientid){
 function SaveEvent(eventid){
     var clientid = $("li.selected").attr("id");
     var text = $("#textEvent").val();
-    var comments = $("#commentsEvent").val();                   
+    var comments = $("#commentsEvent").val();  
+    var check;
+    if ($("#check").is(':checked')){
+            check = 1;
+            }
+    else{
+        check = 0;
+        }                 
         var url = "/event/" + eventid + "/update";    
-        $.post(url, {"eventid":eventid, "clientid": clientid, "text": text, "comments": comments}, function(data){   
+        $.post(url, {"eventid":eventid, "clientid": clientid, "text": text, "comments": comments, "check": check}, function(data){   
            window.location.href="/event/" + eventid;                    
             });   
     }
@@ -201,3 +209,31 @@ function GetClientName(clientid){
     }
 }	
 
+function GetDaySummary(){    	
+            var year = $('div.dhx_cal_date').text();
+            year = year.substring(year.length - 4);
+            //SINGLE DAY FOR DEBUGGING: 
+            //var bar = $('div.dhx_scale_bar').eq(1); //0-bazed
+            //    var day = bar.text().substring(0,3); 
+            //    //alert(day);       
+            //    var dt = new Date(bar.text() + " " + year).toISOString();
+            //    var url = "/getdaysummary/" + dt;        
+            //    $.get(url, function(data){                     
+            //      //$("td[d=" + day + "]").text(result.substring(0, 10)); 
+            //      var ph = data.total / data.min * 60; 
+            //      $("td[d=" + day + "]").text("$" + data.total + ".00 / " + data.hm + " = $" + ph);
+            //    });                
+            $('div.dhx_scale_bar').each(function(){  
+                var day = $(this).text().substring(0,3);        
+                var dt = new Date($(this).text() + " " + year).toISOString();
+                var url = "/getdaysummary/" + dt;        
+                $.get(url, function(data){
+                  if (data != "") {
+                    var ph = Number(data.total / data.min * 60).toFixed(2); 
+                    //alert(data);                    
+                    //$("td[d=" + day + "]").text(result.substring(0, 10));            
+                    $("td[d=" + day + "]").text("$" + data.total + ".00 / " + data.hm + " = $" + ph);
+                  }
+                });                 
+            });           
+}

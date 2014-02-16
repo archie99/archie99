@@ -158,57 +158,6 @@ exports.addservice = function() {
     }
 };
 
-//exports.cloneevent = function(){
-//    return function(req,res){
-//        var colEvents = dbmodule.Events; 
-//            colEvents.findOne({'_id': req.params.eventid}, null, {},function(e, doc){
-//                var com = typeof(doc.comments);
-//                if(com == 'undefined'){                    
-//                    doc.comments = "no comments";                   
-//                    } 
-//                var newEvent = new colEvents;
-//                newEvent.start_date = doc.start_date;
-//                newEvent.end_date = doc.end_date;
-//                newEvent.text = doc.text;
-//                newEvent.clientid = doc.clientid;
-//                newEvent.comments = doc.comments;
-//                newEvent.save(function(err, result){
-//                    if (err){console.log( err);}
-//                    else {
-//                        var colServices = dbmodule.Services;
-//                        var eventid = result.id;        
-//                        colServices.find({'eventid': eventid}, null, {'sort':{'_id':1}},function(e, docs){
-//                            for (var i=0; i<docs.length; i++){
-//                                var newService = new colServices;
-//                                newService.eventid = docs[i].eventid;
-//                                newService.service = docs[i].service;
-//                                newService.price = docs[i].price;
-//                                newService.comments = docs[i].comments;
-//                                newService.save(function(err, result){
-//                                    if (err){
-//                                        //res.send("There was a problem adding the information to the database.");
-//                                        console.log( err);
-//                                    }
-//                                    else {
-//                                        //res.location("event/" + eventid);
-//                                        //res.redirect("event/" + eventid);
-//                                        //res.send(result);
-//                                        console.log(result);
-//                                    }
-//                                });
-//                                }
-//                            });
-                        
-//                        console.log(result);}
-//                    });          
-                
-//            });   
-
-        
-//        };    
-//    };
-
-
 exports.deleteservice = function() {
     return function(req, res){
     var colServices = dbmodule.Services;
@@ -336,6 +285,90 @@ exports.editevent = function(){
         };    
     };
 
+exports.getdaysummaryjs = function(){
+    return function(req,res){
+        var start = new Date(req.params.dt); //08:00 of the calendar day
+        var end = new Date(req.params.dt);        
+        end.setDate(end.getDate() + 1); //08:00 of the next calendar day
+        var startiso = start.toISOString();
+        var endiso = end.toISOString();        
+        var colEvents = dbmodule.Events; 
+        var colServices = dbmodule.Services;
+        var startping = new Date(startiso);
+        startping.setHours(startping.getHours() + 9);
+        startpingiso = startping.toISOString();
+        var endping = new Date(startiso);
+        endping.setHours(startping.getHours() + 12);
+        endpingiso = endping.toISOString(); 
+        var daydata = new Object();
+        daydata.total = 0;
+        daydata.hm = "";
+        daydata.min = 0;
+        var totaldayprice = 0; 
+        colEvents.find({start_date:{$gte: startiso}, end_date:{ $lte: endiso}}, {'_id':1}, function(error, eventlist){
+            if(error){console.log(error)}    
+            else{
+                //console.log(eventlist); 
+                var cc = eventlist.length;   
+                eventlist.forEach(function(event){
+                    colServices.aggregate()                    
+                        .match({'eventid':event.id})
+                        .group({_id:null, total:{$sum:"$price"}})
+                        .exec(function(err, total){
+                            totaldayprice = totaldayprice + total[0].total;
+                            //console.log(event.id);
+                            cc--;
+                            if (cc <= 0){
+                                console.log(startiso + " total: $" + totaldayprice);               
+                                daydata.total = totaldayprice;                                
+                                }
+                        })                            
+                });
+            }
+        });
+        
+              
+        var busy = 0;
+        var count = 48;
+        for(var i = 0; i <= 720; i += 15){
+            ping = new Date(startpingiso);                                
+            ping.setMinutes(ping.getMinutes() + i);
+            pingiso = ping.toISOString();            
+            colEvents.find({start_date:{$lte:pingiso}, end_date:{$gt:pingiso}}, function(er, events){
+                if(events.length > 0){
+                    busy = busy + 1;                                                            
+                }
+                count--;
+                if (count <= 0){
+                    if(busy > 0){
+                        var m = busy * 15;
+                        var hm = Math.floor(m / 60).toString() + ":" + (m % 60).toString(); 
+                        //console.log(hm);
+                        daydata.hm = hm;
+                        daydata.min = m;
+                        console.log(daydata);
+                        res.send(daydata);
+                    }
+                    else{
+                        res.send("");
+                    }
+                }                                                            
+            });            
+         }          
+    }                  
+};
+
+exports.eventservicesj = function(){
+    return function(req,res){
+        var colServices = dbmodule.Services;
+        var eventid = req.params.eventid;
+        colServices.find({'eventid': eventid},null, {'sort':{'_id':1}},function(e, docs){
+               //res.render('eventservices', {'services': docs});
+               res.send(docs);
+            });           
+        };    
+    };
+
 exports.clientevents = function(){
     return function(req,res){
         var colEvents = dbmodule.Events;
@@ -356,16 +389,6 @@ exports.showcalendar = function(){
     };
 };
 
-exports.eventservicesj = function(){
-    return function(req,res){
-        var colServices = dbmodule.Services;
-        var eventid = req.params.eventid;
-        colServices.find({'eventid': eventid},null, {'sort':{'_id':1}},function(e, docs){
-               //res.render('eventservices', {'services': docs});
-               res.send(docs);
-            });           
-        };    
-    };
 
 
 
@@ -472,3 +495,9 @@ exports.ajax = function(req, res){
   //res.render('index', { title: 'Express' });
   res.send("hello vlad,,,,WHEEE");
 };
+
+
+///HELPERS FUNCTIONS
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
+}

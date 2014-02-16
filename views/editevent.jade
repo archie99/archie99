@@ -110,15 +110,17 @@ block content
 							h4.modal-title(id="ModalEventLabel")
 						div.modal-body(style="width: 100%;")
 							div.container.well(style="width:100%;")
-								div.row(style="vertical-align: middle;")										
-									
-									div.col-sm-3
-										select#clients.selectpicker(data-live-search="true" data-size="auto")
-											
+								div.row()										
+									div.col-sm-2
+										select#clients.selectpicker(data-live-search="true" data-size="auto")	
 									div.col-sm-3
 										input.form-control(id="textEvent", type="text", name="text", value="#{event.text}")
-									div.col-sm-6(style="overflow: auto;") 
-										textarea.form-control(id="commentsEvent", type="html", name="comments", style="overflow: auto;") !{event.comments}
+									div.col-sm-4(style="overflow: auto;") 
+										textarea.form-control(id="commentsEvent", type="html", name="comments", style="overflow: auto;") !{event.comments}																	
+									div.col-sm-1.col-sm-offset-1												
+										input.input-sm.form-control(id="check", type="checkbox", name="check", checked=(event.check==1), value=event.check, style="padding-left:50%;")				
+									div.col-sm-1
+										div(style="font-weight:bold;") CHEQUE									
 						div.modal-footer
 							button#cancel.btn.btn-default(type="button", data-dismiss="modal") Cancel
 							button.saveevent.btn.btn-primary(type="button", onclick='SaveEvent("#{event._id}");') Save changes

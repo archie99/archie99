@@ -33,6 +33,7 @@ var EventSchema = new Schema({
     text: String,
     clientid: String,
     comments: String,
+    check: Number
     });
 exports.Events = db.model('events', EventSchema);
 

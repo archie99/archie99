@@ -5,8 +5,8 @@ html
 		title CALENDAR
 		script(src="/dhtmlxScheduler/codebase/dhtmlxscheduler.js")
 		script(src="/dhtmlxScheduler/codebase/ext/dhtmlxscheduler_quick_info.js")
-		link(rel="stylesheet" href="/dhtmlxScheduler/codebase/dhtmlxscheduler_glossy.css")
-		script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+		link(rel="stylesheet" href="/dhtmlxScheduler/codebase/dhtmlxscheduler_glossy.css")		
+		script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")		
 		script(src="/javascripts/helper.js")
 		style(type="text/css" media="screen").
 			html, body{
@@ -14,6 +14,8 @@ html
 				padding:0px;
 				height:100%;
 				overflow:hidden;}	
+			.visible {visibility:visible}
+			.hidden {visibility:hidden}
 		script(type="text/javascript" charset="utf-8").
 			function init() {				
 				scheduler.config.first_hour = 9;
@@ -26,11 +28,41 @@ html
 				scheduler.load("/data", "json");
 				var dp = new dataProcessor("/data");
 				dp.init(scheduler);
-				dp.setTransactionMode("POST", false);}
+				dp.setTransactionMode("POST", false);	
+					$('.dhx_cal_prev_button').click(function(){
+						$('td.s').text("");						
+						});			
+					$('.dhx_cal_next_button').click(function(){
+						$('td.s').text("");						
+						});						
+					$('.dhx_cal_tab').click(function(){
+						$('td.s').text("");						
+						if( $("div[name='week_tab']").hasClass("active")) {
+							$('button#summary').removeClass('hidden').addClass('visible');
+							}
+						else{$('button#summary').removeClass('visible').addClass('hidden');
+							}
+						});
+			}
 			function gohome() {window.location.href = "/";}
-	body(onload="init();")
-		div
-			button(id="homenav" onclick="gohome();") HOME
+	body(onload="init();")		
+		div(style="font-family:Verdana;") 
+			table(style='width:100%;')
+				tr(style='width:100%;')
+					td(style='width:3%;') 
+						button(id="homenav" onclick="gohome();" style='width:100%;') HOME					
+					td.message(style='width:10%; font-size:10px; color: grey;')  						
+				tr
+					td(style='width:3%;') 
+						button.visible(id="summary" onclick="GetDaySummary();" style='width:100%;' ) TOTAL
+					td.s(style='width:10%;' d="Mon") 
+					td.s(style='width:10%;' d="Tue") 
+					td.s(style='width:10%;' d="Wed") 
+					td.s(style='width:10%;' d="Thu") 
+					td.s(style='width:10%;' d="Fri") 
+					td.s(style='width:10%;' d="Sat") 
+					td.s(style='width:10%;' d="Sun")
+					
 		div(id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100%;')
 			div(class="dhx_cal_navline")
 				div(class="dhx_cal_prev_button") &nbsp;
@@ -39,5 +71,5 @@ html
 				div(class="dhx_cal_tab" name="day_tab" style="right:204px;height:auto ;")
 				div(class="dhx_cal_tab" name="week_tab" style="right:140px;height:auto;")
 				div(class="dhx_cal_tab" name="month_tab" style="right:76px;height:auto;")
-			div(class="dhx_cal_header")
-			div(class="dhx_cal_data")
+			div(class="dhx_cal_header")				
+			div(class="dhx_cal_data")		

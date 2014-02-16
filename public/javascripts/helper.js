@@ -228,11 +228,14 @@ function GetDaySummary(){
                 var dt = new Date($(this).text() + " " + year).toISOString();
                 var url = "/getdaysummary/" + dt;        
                 $.get(url, function(data){
-                  if (data != "") {
-                    var ph = Number(data.total / data.min * 60).toFixed(2); 
-                    //alert(data);                    
-                    //$("td[d=" + day + "]").text(result.substring(0, 10));            
-                    $("td[d=" + day + "]").text("$" + data.total + ".00 / " + data.hm + " = $" + ph);
+                  if (data != "") {                    
+                    var total = data.total;
+                    var products = data.products;
+                    var min = data.min;
+                    var hm = data.hm;
+                    var totalservices = total - products;
+                    var ph = Number(totalservices / min * 60).toFixed(2);                                        
+                    $("td[d=" + day + "]").html("Services $" + totalservices + ".00<br/>Time: " + hm + "<br/>PH: $" + ph + "<br/>Products: $" + products + ".00<br/>Total: $" + total + ".00");                        
                   }
                 });                 
             });           

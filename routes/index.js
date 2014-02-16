@@ -302,32 +302,46 @@ exports.getdaysummaryjs = function(){
         endpingiso = endping.toISOString(); 
         var daydata = new Object();
         daydata.total = 0;
+        daydata.products = 0;
         daydata.hm = "";
         daydata.min = 0;
         var totaldayprice = 0; 
+        var totaldaypriceprod = 0;
         colEvents.find({start_date:{$gte: startiso}, end_date:{ $lte: endiso}}, {'_id':1}, function(error, eventlist){
             if(error){console.log(error)}    
-            else{
-                //console.log(eventlist); 
+            else{                
                 var cc = eventlist.length;   
                 eventlist.forEach(function(event){
                     colServices.aggregate()                    
                         .match({'eventid':event.id})
                         .group({_id:null, total:{$sum:"$price"}})
                         .exec(function(err, total){
-                            totaldayprice = totaldayprice + total[0].total;
-                            //console.log(event.id);
+                            totaldayprice = totaldayprice + total[0].total;                            
+                            //GET TOTAL FOR SERVICES PRODUCTS FOR THE EVENTID: 
+                            colServices.aggregate()                    
+                                .match({'eventid':event.id, 'service':'PRODUCTS'})
+                                .group({_id:null, ptotal:{$sum:"$price"}})
+                                .exec(function(err, ptotal){
+                                    if (err){
+                                        console.log(err);
+                                        }
+                                    else{
+                                        if(ptotal.length > 0){
+                                            totaldaypriceprod = totaldaypriceprod + ptotal[0].ptotal;
+                                            }
+                                        }                                                                        
                             cc--;
                             if (cc <= 0){
                                 console.log(startiso + " total: $" + totaldayprice);               
+                                console.log(startiso + " total products: $" + totaldaypriceprod);               
                                 daydata.total = totaldayprice;                                
+                                daydata.products = totaldaypriceprod;
                                 }
-                        })                            
+                            })                                                          
+                        })                                                
                 });
             }
-        });
-        
-              
+        });              
         var busy = 0;
         var count = 48;
         for(var i = 0; i <= 720; i += 15){
@@ -342,8 +356,7 @@ exports.getdaysummaryjs = function(){
                 if (count <= 0){
                     if(busy > 0){
                         var m = busy * 15;
-                        var hm = Math.floor(m / 60).toString() + ":" + (m % 60).toString(); 
-                        //console.log(hm);
+                        var hm = Math.floor(m / 60).toString() + ":" + (m % 60).toString();  
                         daydata.hm = hm;
                         daydata.min = m;
                         console.log(daydata);
@@ -388,9 +401,6 @@ exports.showcalendar = function(){
         res.render('calendar', {'dt': dt});
     };
 };
-
-
-
 
 exports.postdata = function(){
     return function(req, res){
@@ -495,9 +505,3 @@ exports.ajax = function(req, res){
   //res.render('index', { title: 'Express' });
   res.send("hello vlad,,,,WHEEE");
 };
-
-
-///HELPERS FUNCTIONS
-function addMinutes(date, minutes) {
-    return new Date(date.getTime() + minutes*60000);
-}

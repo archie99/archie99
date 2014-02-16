@@ -242,7 +242,7 @@ function GetDaySummary(){
                     var ph = Number(totalservices / min * 60).toFixed(2);                                        
                     $("td[d=" + day + "]").html("Services $" + totalservices + ".00<br/>Time: " + hm + "<br/>PH: $" + ph + "<br/>Products: $" + products + ".00<br/>Total: $" + total + ".00");    
                     for(var i = 0; i < data.check.length; i++){
-                       $("div.dhx_cal_event[event_id=" + data.check[i] + "] div.dhx_body").css("font-weight", "bold").css("background-color","gold");  
+                       $("div.dhx_cal_event[event_id=" + data.check[i] + "] div.dhx_body").css("font-weight", "bold").css("background-color","#e5ce9a").css("color","#2e3444");  
                     } 
                     wtotal = wtotal + total;
                     wtotalservices = wtotalservices + totalservices;

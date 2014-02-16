@@ -305,13 +305,17 @@ exports.getdaysummaryjs = function(){
         daydata.products = 0;
         daydata.hm = "";
         daydata.min = 0;
+        daydata.check = [];
         var totaldayprice = 0; 
         var totaldaypriceprod = 0;
-        colEvents.find({start_date:{$gte: startiso}, end_date:{ $lte: endiso}}, {'_id':1}, function(error, eventlist){
+        colEvents.find({start_date:{$gte: startiso}, end_date:{ $lte: endiso}}, {'_id':1, 'check':1}, function(error, eventlist){
             if(error){console.log(error)}    
-            else{                
+            else{                  
                 var cc = eventlist.length;   
                 eventlist.forEach(function(event){
+                    if (event.check == 1){
+                        daydata.check.push(event.id);
+                        }
                     colServices.aggregate()                    
                         .match({'eventid':event.id})
                         .group({_id:null, total:{$sum:"$price"}})
@@ -333,7 +337,7 @@ exports.getdaysummaryjs = function(){
                             cc--;
                             if (cc <= 0){
                                 console.log(startiso + " total: $" + totaldayprice);               
-                                console.log(startiso + " total products: $" + totaldaypriceprod);               
+                                console.log(startiso + " total products: $" + totaldaypriceprod); 
                                 daydata.total = totaldayprice;                                
                                 daydata.products = totaldaypriceprod;
                                 }

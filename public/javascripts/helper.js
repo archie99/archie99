@@ -222,11 +222,16 @@ function GetDaySummary(){
             //      //$("td[d=" + day + "]").text(result.substring(0, 10)); 
             //      var ph = data.total / data.min * 60; 
             //      $("td[d=" + day + "]").text("$" + data.total + ".00 / " + data.hm + " = $" + ph);
-            //    });                
+            //    });  
+            var wtotal = 0;
+            var wtotalservices =0;
+            var wproducts = 0;
+            var wmin = 0;   
+            var count = $('div.dhx_scale_bar').length;                           
             $('div.dhx_scale_bar').each(function(){  
                 var day = $(this).text().substring(0,3);        
                 var dt = new Date($(this).text() + " " + year).toISOString();
-                var url = "/getdaysummary/" + dt;        
+                var url = "/getdaysummary/" + dt;                                          
                 $.get(url, function(data){
                   if (data != "") {                    
                     var total = data.total;
@@ -235,8 +240,21 @@ function GetDaySummary(){
                     var hm = data.hm;
                     var totalservices = total - products;
                     var ph = Number(totalservices / min * 60).toFixed(2);                                        
-                    $("td[d=" + day + "]").html("Services $" + totalservices + ".00<br/>Time: " + hm + "<br/>PH: $" + ph + "<br/>Products: $" + products + ".00<br/>Total: $" + total + ".00");                        
+                    $("td[d=" + day + "]").html("Services $" + totalservices + ".00<br/>Time: " + hm + "<br/>PH: $" + ph + "<br/>Products: $" + products + ".00<br/>Total: $" + total + ".00");    
+                    for(var i = 0; i < data.check.length; i++){
+                       $("div.dhx_cal_event[event_id=" + data.check[i] + "] div.dhx_body").css("font-weight", "bold").css("background-color","gold");  
+                    } 
+                    wtotal = wtotal + total;
+                    wtotalservices = wtotalservices + totalservices;
+                    wproducts = wproducts + products;
+                    wmin = wmin + min;                                                    
+                  }
+                  count--;
+                  if (count <= 0){                    
+                    var wph = Number(wtotalservices / wmin * 60).toFixed(2);                    
+                    var whm = Math.floor(wmin / 60).toString() + ":" + (wmin % 60).toString();  
+                    $("td[d='Sun']").html("Services $" + wtotalservices + ".00<br/>Time: " + whm + "<br/>PH: $" + wph + "<br/>Products: $" + wproducts + ".00<br/>Total: $" + wtotal + ".00").css("font-weight","bold");       
                   }
                 });                 
-            });           
+            });                 
 }

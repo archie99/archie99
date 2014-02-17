@@ -20,7 +20,7 @@ block content
 						div.col-sm-3
 							h3(id="clientname")	
 						div.col-sm-1.col-sm-offset-7												
-							a#list.btn.btn-primary.btn-md.pull-right(href="/_client/#{event.clientid}/events" data-toggle="tooltip" data-placement="bottom" title="Back to Client Visits" disabled="disabled")
+							a#list.btn.btn-primary.btn-md.pull-right(href="/_client/#{event.clientid}/events" data-toggle="tooltip" data-placement="bottom" title="All Client Visits" disabled="disabled")
 									span.glyphicon.glyphicon-list							
 						div.col-sm-1
 							a.btn.btn-primary.btn-md.pull-right(href="/calendar/#{calendardate}" data-toggle="tooltip" data-placement="bottom" title="Back to Calendar")
@@ -46,10 +46,10 @@ block content
 						div.col-sm-1
 						div.col-sm-5(style="overflow: auto;") !{servicecomments}						
 						div.col-sm-1
-							button.deleteservice.btn.btn-primary.btn-md.pull-right(id=service._id, event=event._id data-toggle="tooltip" data-placement="bottom" title="Delete this Record")
+							button.deleteservice.btn.btn-primary.btn-md.pull-right(id=service._id, event=event._id data-toggle="tooltip" data-placement="bottom" title="Delete this Service")
 								span.glyphicon.glyphicon-remove(style="color: #fe6666;")
 						div.col-sm-1
-							button.editservice.btn.btn-primary.btn-md.pull-right(id=service._id data-toggle="tooltip" data-placement="bottom" title="Edit this Record")
+							button.editservice.btn.btn-primary.btn-md.pull-right(id=service._id data-toggle="tooltip" data-placement="bottom" title="Edit this Service")
 								span.glyphicon.glyphicon-edit
 					hr(style='border-bottom: 1px solid #d0d0d0')						
 				div.row
@@ -58,7 +58,7 @@ block content
 					div.col-sm-2						
 						div(style="float:right; font-weight:bold;") $ #{total}.00	
 					div.col-sm-1.col-sm-offset-7
-						button.newservice.btn.btn-primary.btn-md.pull-right(onclick='NewService("#{event._id}");' data-toggle="tooltip" data-placement="bottom" title="Add new Record to this Visit")
+						button.newservice.btn.btn-primary.btn-md.pull-right(onclick='NewService("#{event._id}");' data-toggle="tooltip" data-placement="bottom" title="Add new Service to this Visit")
 								span.glyphicon.glyphicon-plus-sign
 				br/
 				
@@ -103,15 +103,15 @@ block content
 
 			//MODAL: EDIT EVENT//
 			div.modal.container-wellfade(id="ModalEvent" tabindex="-1" role="dialog" aria-labelledby="ModalEventLabel" aria-hidden="true" )
-				div.modal-dialog(style="width: 80%; margin: 10% 10% 10% 10%;")
+				div.modal-dialog(style="width: 90%; margin: 5% 5% 5% 5%;")
 					div.modal-content
 						div.modal-header
 							button.close(type="button", data-dismiss="modal" aria-hidden="true") &times
 							h4.modal-title(id="ModalEventLabel")
 						div.modal-body(style="width: 100%;")
 							div.container.well(style="width:100%;")
-								div.row()										
-									div.col-sm-2
+								div.row										
+									div.col-sm-3
 										select#clients.selectpicker(data-live-search="true" data-size="auto")	
 									div.col-sm-3
 										input.form-control(id="textEvent", type="text", name="text", value="#{event.text}")

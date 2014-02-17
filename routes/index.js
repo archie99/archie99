@@ -306,42 +306,52 @@ exports.getdaysummaryjs = function(){
         daydata.hm = "";
         daydata.min = 0;
         daydata.check = [];
+        daydata.notcliented = [];
         var totaldayprice = 0; 
         var totaldaypriceprod = 0;
-        colEvents.find({start_date:{$gte: startiso}, end_date:{ $lte: endiso}}, {'_id':1, 'check':1}, function(error, eventlist){
+        colEvents.find({start_date:{$gte: startiso}, end_date:{ $lte: endiso}}, {'_id':1, 'check':1, 'clientid':1}, function(error, eventlist){
             if(error){console.log(error)}    
-            else{                  
+            else{  
+                            
                 var cc = eventlist.length;   
                 eventlist.forEach(function(event){
+                    //console.log("CLIENT: " + event.clientid);    
                     if (event.check == 1){
                         daydata.check.push(event.id);
+                        }
+                    if (!event.clientid){
+                        //console.log("EVENT: " + event.id + " CLIENT: " + event.clientid);    
+                        daydata.notcliented.push(event.id);
                         }
                     colServices.aggregate()                    
                         .match({'eventid':event.id})
                         .group({_id:null, total:{$sum:"$price"}})
                         .exec(function(err, total){
-                            totaldayprice = totaldayprice + total[0].total;                            
-                            //GET TOTAL FOR SERVICES PRODUCTS FOR THE EVENTID: 
-                            colServices.aggregate()                    
-                                .match({'eventid':event.id, 'service':'PRODUCTS'})
-                                .group({_id:null, ptotal:{$sum:"$price"}})
-                                .exec(function(err, ptotal){
-                                    if (err){
-                                        console.log(err);
-                                        }
-                                    else{
-                                        if(ptotal.length > 0){
-                                            totaldaypriceprod = totaldaypriceprod + ptotal[0].ptotal;
+                            if(total.length > 0){
+                                //console.log(event.id + "  TOTAL: CHECK IF EVENT HAS SERVICES: " + total);
+                                totaldayprice = totaldayprice + total[0].total;                            
+                                //GET TOTAL FOR SERVICES PRODUCTS FOR THE EVENTID: 
+                                colServices.aggregate()                    
+                                    .match({'eventid':event.id, 'service':'PRODUCTS'})
+                                    .group({_id:null, ptotal:{$sum:"$price"}})
+                                    .exec(function(err, ptotal){
+                                        if (err){
+                                            console.log(err);
                                             }
-                                        }                                                                        
-                            cc--;
-                            if (cc <= 0){
-                                console.log(startiso + " total: $" + totaldayprice);               
-                                console.log(startiso + " total products: $" + totaldaypriceprod); 
-                                daydata.total = totaldayprice;                                
-                                daydata.products = totaldaypriceprod;
-                                }
-                            })                                                          
+                                        else{
+                                            if(ptotal.length > 0){
+                                                totaldaypriceprod = totaldaypriceprod + ptotal[0].ptotal;
+                                                }
+                                            }                                                                        
+                                cc--;
+                                if (cc <= 0){
+                                    //console.log(startiso + " total: $" + totaldayprice);               
+                                    //console.log(startiso + " total products: $" + totaldaypriceprod); 
+                                    daydata.total = totaldayprice;                                
+                                    daydata.products = totaldaypriceprod;
+                                    }
+                                })
+                            }                                                          
                         })                                                
                 });
             }

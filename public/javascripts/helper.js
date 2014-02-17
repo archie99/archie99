@@ -151,6 +151,10 @@ function SaveService(eventid){
 function EditEvent(clientid){      
     var url = "/_clientjson/" + clientid;
     $.get(url, function(clientdata){ 
+        //alert(clientid);
+        //if(clientid == 'undefined'){
+        //    alert(clientid);
+        //    }
         //Fill clients dropdown with clients:                 
         $.get("/clientsjson", function(data){
             var dd = $("select#clients.selectpicker");
@@ -164,14 +168,17 @@ function EditEvent(clientid){
                else{items.push("<option id=" + value._id + "> " + value.firstname + " " + value.lastname   + "</>");}
             });
             dd.html(items.join(""));
-            $("#clients.selectpicker").selectpicker(); 
+            if(clientid == 'undefined'){
+            $("#clients.selectpicker").selectpicker({style:'btn-danger'}); 
+            }
+            else{$("#clients.selectpicker").selectpicker(); }
             $("#clients.selectpicker").selectpicker('render'); //render to activate selected client
             //set id for each client li in dropdown:
+            //$('div.btn-group.bootstrap-select').addClass("col-sm-3")
             $("ul.dropdown-menu li").each(function(){
                 var li = $(this);
                 li.attr("id", li.find("a").attr("id"));
             });            
-           
             $("#ModalEvent").modal('show');  
         });       
     });  
@@ -243,6 +250,9 @@ function GetDaySummary(){
                     $("td[d=" + day + "]").html("Services $" + totalservices + ".00<br/>Time: " + hm + "<br/>PH: $" + ph + "<br/>Products: $" + products + ".00<br/>Total: $" + total + ".00");    
                     for(var i = 0; i < data.check.length; i++){
                        $("div.dhx_cal_event[event_id=" + data.check[i] + "] div.dhx_body").css("font-weight", "bold").css("background-color","#e5ce9a").css("color","#2e3444");  
+                    } 
+                    for(var i = 0; i < data.notcliented.length; i++){
+                       $("div.dhx_cal_event[event_id=" + data.notcliented[i] + "] div.dhx_event_move.dhx_title").css("font-weight", "bold").css("background-color","red").css("color","#2e3444");  
                     } 
                     wtotal = wtotal + total;
                     wtotalservices = wtotalservices + totalservices;

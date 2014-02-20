@@ -7,11 +7,95 @@ db.bind('records');
 db.bind('services');
 
 exports.index = function(req, res){
-  //res.render('calendar', { title: 'Express' });
-  //res.location("index.html");
-  //res.redirect("index.html");
-  res.render('index');
- };
+    return function(req, res){
+        var colExpences = dbmodule.Expences;
+        var exp = new Object();
+        exp.years = [];
+        var expyears = [];       
+        colExpences.aggregate([{$sort:{'date':1}},{$group:{_id:{year:{$year: '$date'}}}}], function(err, years){
+            if(err){console.log(err);}
+            else{
+                if(years.length > 0){                  
+                  for(var i = 0; i < years.length; i++){                    
+                    expyears.push(years[i]._id.year);                    
+                  }      
+                }
+            }
+            GetMonths(expyears, function(data){                                 
+                res.render('expences', {'data': data});    
+            });            
+        });        
+    }
+}
+
+function GetMonths(expyears, next){    
+    var count = expyears.length;
+    var resultyears = [];
+    console.log(expyears.length);
+    expyears.forEach(function(year){
+       var resultyear = new Object();
+       var colExpences = dbmodule.Expences;              
+       var s = new Date(year + ",1,1");
+       var e = new Date(year + ",1,1");
+       e.setFullYear(e.getFullYear() + 1);       
+       console.log(year + " s: " + s.toISOString() + " e: " + e.toISOString());
+       colExpences.aggregate(
+            [
+                {$sort:{'date':1}},
+                {$match: {date :{$gte : s, $lte : e }}},
+                {$group: {_id: {month: {$month: '$date'}}}}   
+            ],
+            function(err, resultmonths){
+                if(err){console.log(err);}
+                else{
+                    var months = [];
+                    for(i = 0; i < resultmonths.length; i++){                        
+                        months[i] = resultmonths[i]._id.month;                                
+                    }                    
+                    GetExpences(year, months, function(resultmonths){                     
+                       resultyear.months = resultmonths;
+                       resultyear.name = year;
+                       resultyears.push(resultyear);
+                       count--;
+                       if(count <= 0){                            
+                            next(resultyears);    
+                        }                           
+                    });              
+                }
+       });       
+    });
+}
+
+function GetExpences(expyear, expmonths, next){   
+    var count = expmonths.length;    
+    var months = [];
+    var colExpences = dbmodule.Expences;
+    expmonths.forEach(function(expmonth){
+        var month = new Object();
+        month.name = expmonth;
+        var exp = [];
+        var s = new Date(expyear + "," + expmonth + ",1");
+        var e = new Date(expyear + "," + expmonth + ",1");
+        e.setMonth(e.getMonth() + 1);
+        console.log(expyear + " month: " + expmonth + " s: " + s.toISOString() + " e: " + e.toISOString());
+        colExpences.find({'date':{$gte:s, $lt:e}},null, {sort:{'date':-1}}, function(err, results){
+                if(err){console.log(err);}
+                else{
+                        if(results.length > 0){                        
+                            for(i = 0; i < results.length; i++){
+                                exp.push(results[i]);    
+                            }
+                            month.exp = exp;
+                            months.push(month);
+                        }                        
+                        count--;
+                        if(count <= 0){                            
+                            next(months);
+                        }    
+                }                    
+        });        
+    });    
+}
 
 exports.clients = function(){    
     return function(req, res){

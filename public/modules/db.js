@@ -45,3 +45,13 @@ var ServiceSchema = new Schema({
     comments: String
     });
 exports.Services = db.model('services', ServiceSchema);
+
+//Expences:
+var ExpenceSchema = new Schema({
+    date: Date,
+    type: String,
+    price: Number,
+    payment: String,
+    comments: String
+    });
+exports.Expences = db.model('expences', ExpenceSchema);

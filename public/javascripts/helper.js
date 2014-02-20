@@ -9,7 +9,13 @@
 
         $('#newclientform').validate();
 
-        
+        var sMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        $('h4.month').each(function(){
+            var sm = $(this).attr('id');
+            var im = parseInt(sm);            
+            var r = sMonths[im -1];
+            $(this).html(r);            
+            });
 
         $('button#search').click(function(){            
             var pattern = $('input#search').val();
@@ -268,3 +274,10 @@ function GetDaySummary(){
                 });                 
             });                 
 }
+
+function GetMonth(iMonth){
+    var sMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    var int = parseInt(iMonth);
+    alert(sMonths[int]);
+    return sMonths[int];        
+    }

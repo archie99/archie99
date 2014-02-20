@@ -1965,7 +1965,7 @@
     <Content Include="views\clientevents.jade" />
     <Content Include="views\clients.jade" />
     <Content Include="views\eventservices.jade" />
-    <Content Include="views\index.jade" />
+    <Content Include="views\expences.jade" />
     <Content Include="views\layout.jade" />
     <Content Include="views\newclient.jade" />
     <Content Include="views\editevent.jade" />

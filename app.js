@@ -29,7 +29,7 @@ if ('development' == app.get('env')) {
 }
 
 //CLIENTS:
-app.get('/', routes.index);
+app.get('/', routes.index());
 //All clients for Clients page:
 app.get('/clients', routes.clients());
 //Single client for Client Edit page:

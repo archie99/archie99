@@ -91,19 +91,13 @@
          $("button.deleteexpence").click(function(){
             
             var answer = confirm('Are you sure you want to delete this record?');
-            
             if (answer){
-			var expenceid = this.id;
-            //var eventid = $(this).attr('event');
-            //alert("service: " + serviceid);
-            //alert("event: " + eventid);
-            var url = "/expence/" + expenceid + "/delete";
-            $.get(url, function(data){                
-                //window.location.href="/event/" + eventid; 
-                //alert(data);            
-                //$("#ModalExpence").modal('hide');
-                location.reload(true);                
-                });    
+			    var expenceid = this.id;            
+                var url = "/expence/" + expenceid + "/delete";
+                $.get(url, function(data){                                
+                    //$("#ModalExpence").modal('hide');
+                    location.reload(true);                
+                    });    
             }                   
 		});  
          

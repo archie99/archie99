@@ -7,10 +7,12 @@
         
         $('#birthday').datepicker();
 
+        //$('#dateExpence').datepicker({format: "mm-dd-yyyy"});
+
         $('#newclientform').validate();
 
         var sMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-        $('h4.month').each(function(){
+        $('.month').each(function(){
             var sm = $(this).attr('id');
             var im = parseInt(sm);            
             var r = sMonths[im -1];
@@ -85,7 +87,71 @@
             else{
                 }          
 		});  
+
+         $("button.deleteexpence").click(function(){
             
+            var answer = confirm('Are you sure you want to delete this record?');
+            
+            if (answer){
+			var expenceid = this.id;
+            //var eventid = $(this).attr('event');
+            //alert("service: " + serviceid);
+            //alert("event: " + eventid);
+            var url = "/expence/" + expenceid + "/delete";
+            $.get(url, function(data){                
+                //window.location.href="/event/" + eventid; 
+                //alert(data);            
+                //$("#ModalExpence").modal('hide');
+                location.reload(true);                
+                });    
+            }                   
+		});  
+         
+         $("button.editexpence").click(function(){
+            var row = $(this).closest("div.row");
+            row.css("background-color", "darkgrey");
+			var id = this.id;
+            var url = "/expence/" + id;                        
+            var items = [];
+            $.get(url, function(data){  
+                var dt = new Date(data.date);
+                //alert(dt.toLocaleDateString());
+                var dp = $('#dateExpence');
+                dp.datepicker({format: "yyyy-mm-dd"});
+                dp.datepicker('setValue', dt);                                       
+                $("#priceExpence").val(data.price);
+                $("#commentsExpence").val(data.comments);
+                $("button.saveexpence").attr('id', data._id);
+                $("#ModalExpenceLabel").text("EDIT EXPENCE: ");
+                $("#ModalExpence").modal('show'); 
+                $("button.saveservice").attr("id", data._id); 
+                var type = data.type;       
+                var stype = $("select#expences.selectpicker");
+                if (type != ""){
+                $("option:contains(" + type + ")").attr("selected", "selected");
+                }
+                else{
+                $("option:contains('NOT SELECTED')").attr("selected", "selected");   
+                }
+                stype.selectpicker(); 
+                stype.selectpicker('render'); 
+                
+                var payment = data.payment; 
+                var spayment = $("select#payment.selectpicker");
+                if (payment != ""){
+                $("option:contains(" + payment + ")").attr("selected", "selected");
+                }
+                else{
+                $("option:contains('NOT SELECTED')").attr("selected", "selected");   
+                }
+                spayment.selectpicker(); 
+                spayment.selectpicker('render'); 
+            });  
+            
+            $("button#cancel").click(function(){
+                row.css("background-color", "transparent");
+                });                                               
+        });    
                 
         $("button.editservice").click(function(){
             var row = $(this).closest("div.row");
@@ -118,6 +184,27 @@
                 });                                               
         });        
 });
+
+function NewExpence(){                              
+            var url = "/addexpence";                                    
+            $.get(url, function(data){  
+                var dt = data.date;                
+                var dp = $('#dateExpence');
+                dp.datepicker({format: "yyyy-mm-dd"});
+                dp.datepicker('setValue', dt);                 
+                $("#ModalExpenceLabel").text("NEW EXPENCE: ");
+                $("#ModalExpence").modal('show'); 
+                $("button.saveexpence").attr("id", data._id);                 
+                var stype = $("select#expences.selectpicker");                
+                $("option:contains('NOT SELECTED')").attr("selected", "selected");                   
+                stype.selectpicker();                 
+                stype.selectpicker('render'); 
+                var spayment  = $("select#payment.selectpicker"); 
+                $("option:contains('NOT SELECTED')").attr("selected", "selected");                   
+                spayment.selectpicker(); 
+                spayment.selectpicker('render');                 
+            });  
+}
 
 function NewService(eventid){      
     $.get("/event/" + eventid + "/addservice", function(data){
@@ -153,14 +240,35 @@ function SaveService(eventid){
             });                                
         }
 
+function SaveExpence(){
+            var expenceid = $("button.saveexpence").attr("id");              
+            var url = "/expence/" + expenceid + "/update";                 
+            var type = $("button[data-id='expences']").attr('title');
+            if(type == "NOT SELECTED"){
+                    alert("Select Expence Type.");
+                    $("button[data-id='expences']").selectpicker({style:'btn-danger'}); 
+                    return;
+                }
+            var payment = $("button[data-id='payment']").attr('title'); 
+            if(payment == "NOT SELECTED"){
+                    alert("Select Expence Payment.");
+                    $("button[data-id='payment']").selectpicker({style:'btn-danger'});
+                    return; 
+                }           
+            var price = $("#priceExpence").val();
+            var comments = $("#commentsExpence").val();              
+            var date = new Date($("#dateExpence").val());            
+            date.setHours(date.getHours() + 9);            
+            $.post(url, {"id":expenceid, "type": type, "price": price, "comments": comments, "payment": payment, "date": date}, function(data){                             
+            alert(data);            
+            $("#ModalExpence").modal('hide');
+            location.reload(true);
+            });                                
+        }
 
 function EditEvent(clientid){      
     var url = "/_clientjson/" + clientid;
-    $.get(url, function(clientdata){ 
-        //alert(clientid);
-        //if(clientid == 'undefined'){
-        //    alert(clientid);
-        //    }
+    $.get(url, function(clientdata){         
         //Fill clients dropdown with clients:                 
         $.get("/clientsjson", function(data){
             var dd = $("select#clients.selectpicker");

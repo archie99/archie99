@@ -64,6 +64,12 @@ app.post('/service/:serviceid/update', routes.updateservice());
 app.get('/event/:eventid/service/:serviceid/delete', routes.deleteservice());
 app.get('/event/:eventid/services/delete', routes.deleteservices());
 
+//EXPENCES:
+app.get('/expence/:expenceid', routes.expencejs());
+app.get('/addexpence', routes.addexpence());
+app.get('/expence/:expenceid/delete', routes.deleteexpence());
+app.post('/expence/:expenceid/update', routes.updateexpence());
+
 //CALENDAR:
 app.get('/data', routes.getdata());
 app.post('/data', routes.postdata());

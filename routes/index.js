@@ -199,6 +199,22 @@ exports.updateservice = function() {
     }
 };
 
+exports.updateexpence = function() {
+    return function(req, res){
+    var colExpence = dbmodule.Expences;
+    var expenceid  = req.params.expenceid;    
+    colExpence.findByIdAndUpdate(expenceid, req.body, function(err){
+        if (err){
+            res.send("There was a problem adding the information to the database.");
+            console.log( err);
+        }
+        else {
+            res.send("Saved");            
+        }
+    });
+    }
+};
+
 exports.updateevent = function() {
     return function(req, res){
     var colEvents = dbmodule.Events;
@@ -242,6 +258,27 @@ exports.addservice = function() {
     }
 };
 
+exports.addexpence = function() {
+    return function(req, res){
+    var colExpences = dbmodule.Expences;
+    var newExpence = new colExpences;    
+    newExpence.date = new Date();
+    newExpence.type = "";
+    newExpence.price = 0;
+    newExpence.payment = "";
+    newExpence.comments = "";
+    newExpence.save(function(err, result){
+        if (err){
+            console.log( err);
+            res.send("There was a problem adding the information to the database.");            
+        }
+        else {            
+            res.send(result);
+        }
+    });
+    }
+};
+
 exports.deleteservice = function() {
     return function(req, res){
     var colServices = dbmodule.Services;
@@ -260,6 +297,27 @@ exports.deleteservice = function() {
     });
     }
 };
+
+
+exports.deleteexpence = function() {
+    return function(req, res){
+    var colExpences = dbmodule.Expences;
+    var expenceid = req.params.expenceid;
+    //var serviceid = req.params.serviceid; 
+    colExpences.remove({'_id':expenceid}, function(err, result){
+        if (err){
+            res.send("There was a problem removing the information from the database.");
+            console.log( err);
+        }
+        else {
+            //res.location("event/" + eventid);
+            //res.redirect("event/" + eventid);
+            res.send("Expence deleted.");
+        }
+    });
+    }
+};
+
 
 exports.deleteservices = function() {
     return function(req, res){
@@ -349,6 +407,17 @@ exports.servicej = function(){
         };    
     };
 
+exports.expencejs = function(){
+    return function(req,res){
+        var colExpences = dbmodule.Expences;
+        var expenceid = req.params.expenceid;
+        colExpences.findOne({'_id': expenceid},{},function(e, doc){
+            //console.log(doc.date.toLocaleDateString());
+            res.send(doc);
+            });
+        };    
+    };
+
 exports.editevent = function(){
     return function(req,res){
         var colServices = dbmodule.Services;
@@ -394,7 +463,7 @@ exports.getdaysummaryjs = function(){
         var totaldayprice = 0; 
         var totaldaypriceprod = 0;
         colEvents.find({start_date:{$gte: startiso}, end_date:{ $lte: endiso}}, {'_id':1, 'check':1, 'clientid':1}, function(error, eventlist){
-            if(error){console.log(error)}    
+            if(error){console.log(error);}    
             else{  
                             
                 var cc = eventlist.length;   

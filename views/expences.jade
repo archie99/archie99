@@ -1,0 +1,92 @@
+//use only spaces for indentation: each indent should be 4 spaces.
+//or only tabs for indentation.
+extends layout
+block content
+	script.
+		$('#navhome').addClass('active');
+		$('#navclients').removeClass('active');
+		$('#navvisits').removeClass('active');			
+	div.container.well.well-lg
+		div.content
+			div.row
+				div.div.col-sm-1(style="float:right;")			
+					button.newexpence.btn.btn-primary.btn-lg.pull-right(onclick='NewExpence();' data-toggle="tooltip" data-placement="bottom" title="Add new Expence")
+						span.glyphicon.glyphicon-plus-sign
+				div.div.col-sm-3			
+					h3 &nbsp; EXPENCES				
+			each year, y in data
+				//- var eventcomments = event.comments.replace(/\n/g, '<br>');
+				div.container.well(style="width:100%;")
+					h3  &nbsp; #{year.name}	
+						each month, m in year.months
+							- var total = 0;												
+							div.panel-group(id="month" + month.name)
+								div.panel.panel-default
+									div.panel-heading												
+										div.panel-title
+											a(data-toggle="collapse" data-parent="month" + month.name href="#collapse-month" + month.name)
+												h4.month(id=month.name)
+
+									div.panel-collapse.collapse(id="collapse-month" + month.name)	
+										div.panel-body									
+											each expence, e in month.exp
+												- var comments = expence.comments.replace(/\n/g, '<br>');
+												- var dt = expence.date.getDate();
+												- total += expence.price;
+												div.container(style="font-size:14px; width:98%")
+													div.row.well
+														div.div.col-sm-1 #{dt}
+														div.div.col-sm-2 #{expence.type}
+														div.div.col-sm-2 $ #{expence.price}.00
+														div.div.col-sm-2 #{expence.payment}
+														div.div.col-sm-3 !{comments}
+														div.col-sm-1
+															button.deleteexpence.btn.btn-primary.btn-md.pull-right(id=expence._id data-toggle="tooltip" data-placement="bottom" title="Delete this Expence")
+																span.glyphicon.glyphicon-remove(style="color: #fe6666;")
+														div.col-sm-1
+															button.editexpence.btn.btn-primary.btn-md.pull-right(id=expence._id data-toggle="tooltip" data-placement="bottom" title="Edit this Expence")
+																span.glyphicon.glyphicon-edit
+										div.panel-footer
+											div 
+												h5 TOTAL: $ #{total}.00
+			//MODAL: EDIT EXPENCE
+			div.modal.container-wellfade(id="ModalExpence" tabindex="-1" role="dialog" aria-labelledby="ModalExpenceLabel" aria-hidden="true")
+				div.modal-dialog(style="width: 90%; margin: 5% 5% 5% 5%;")
+					div.modal-content
+						div.modal-header
+							button.close(type="button", data-dismiss="modal" aria-hidden="true") &times
+							h4.modal-title(id="ModalExpenceLabel")
+						div.modal-body
+							div.container.well(style="width:100%;")
+								div.row
+									div.col-sm-2(style="position: relative;  width: 15%;")
+										input.form-control(id="dateExpence", type="text", name="date")	
+									div.col-sm-3(style="position: relative;  width: 20%;")			
+										select#expences.selectpicker.show-menu-arrow(data-size='auto')
+											option NOT SELECTED
+											option PHONE
+											option PRODUCT KINGDOM BS
+											option PRODUCT MODERN BS
+											option COLOR KINGDOM BS
+											option COLOR MODERN BS
+											option SUPPLY
+											option MISC
+											option RENT
+											option CLEANING
+											option PARKING
+									div.col-sm-2(style="position: relative;  width: 15%;")	
+										div.input-group
+											span.input-group-addon $
+											input.form-control(id="priceExpence", type="text", name="price" style="text-align: right;")
+											span.input-group-addon .00										
+									div.col-sm-2(style="position: relative;  width: 20%;")					
+										select#payment.selectpicker.show-menu-arrow(data-size='auto')
+											option NOT SELECTED
+											option DEBIT
+											option CHEQUE
+											option CASH											
+									div.col-sm-3(style="overflow: auto; position: relative; width: 30%;")	
+										textarea.form-control(id="commentsExpence", type="text", name="comments", style="overflow: auto;") 
+						div.modal-footer
+							button#cancel.btn.btn-default(type="button", data-dismiss="modal") Cancel
+							button.saveexpence.btn.btn-primary(type="button", onclick='SaveExpence();') Save changes			

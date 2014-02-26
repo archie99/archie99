@@ -5,7 +5,8 @@ block content
 	script.
 		$('#navhome').addClass('active');
 		$('#navclients').removeClass('active');
-		$('#navvisits').removeClass('active');			
+		$('#navvisits').removeClass('active');	
+		$('#navreports').removeClass('active');		
 	div.container.well.well-lg
 		div.content
 			div.row
@@ -37,7 +38,7 @@ block content
 													div.row.well
 														div.div.col-sm-1 #{dt}
 														div.div.col-sm-2 #{expence.type}
-														div.div.col-sm-2 $ #{expence.price}.00
+														div.div.col-sm-2(style="text-align: right;") $ #{expence.price}.00
 														div.div.col-sm-2 #{expence.payment}
 														div.div.col-sm-3 !{comments}
 														div.col-sm-1
@@ -82,6 +83,7 @@ block content
 									div.col-sm-2(style="position: relative;  width: 20%;")					
 										select#payment.selectpicker.show-menu-arrow(data-size='auto')
 											option NOT SELECTED
+											option VISA
 											option DEBIT
 											option CHEQUE
 											option CASH											

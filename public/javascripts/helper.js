@@ -1,17 +1,27 @@
 ﻿$(document).ready(function(){
-       	    
-        $("#rollButton").click(function() {
-	         //$("div.parent").toggle(200);  
-          $.get("/a",function(data,status){ $("p.temp").text(data);});
-        });	
+       	 
+        var sMonths = ["January","February","March","April","May","June","July","August","September","October","November","December","ALL"];           
+        var year = $("select#years").attr('category');
+        var month = $("select#months").attr('category');
+        month = sMonths[month - 1];
         
+        $("select#years.selectpicker option:contains(" + year + ")").attr("selected", "selected");        
+        var syears = $("select#years.selectpicker");        
+        syears.selectpicker(); 
+        syears.selectpicker('render');
+        
+        $("select#months.selectpicker option:contains(" + month + ")").attr("selected", "selected");     
+        var smonths = $("select#months.selectpicker");
+        smonths.selectpicker(); 
+        smonths.selectpicker('render');              
+
         $('#birthday').datepicker();
 
         //$('#dateExpence').datepicker({format: "mm-dd-yyyy"});
 
         $('#newclientform').validate();
 
-        var sMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        
         $('.month').each(function(){
             var sm = $(this).attr('id');
             var im = parseInt(sm);            
@@ -23,6 +33,21 @@
             var pattern = $('input#search').val();
             window.location.href="/clients/" + pattern;            
             });    
+
+        $('button#report').click(function(){            
+            var year = $("button[data-id='years']").attr('title');
+            var month = $("button[data-id='months']").attr('title');
+            month = sMonths.indexOf(month) + 1; 
+            var bank;
+            if ($("#bank").is(':checked')){
+                bank = 1;
+            }
+            else{
+                bank = 0;
+            }             
+            window.location.href="/reports/year/" + year + "/month/" + month + "/bank/" + bank;            
+            });    
+
         $('input#active').change(function(){            
             var status = $('input#active').prop('checked');
             if (status == true){
@@ -152,8 +177,9 @@
             row.css("background-color", "darkgrey");
 			var id = this.id;
             var url = "/service/" + id;            
-            var p = $("div.container.xx");  
-            p.empty();          
+            //var p = $("div.container.xx");  
+            //p.empty();          
+            $("select#services.selectpicker option").removeAttr('selected');
             var items = [];
             $.get(url, function(data){                 
                 var service = data.service;                
@@ -162,7 +188,7 @@
                 $("#ModalServiceLabel").text("EDIT SERVICE: ");
                 $("#ModalService").modal('show'); 
                 $("button.saveservice").attr("id", data._id);  
-                var dd = $("select#services.selectpicker");
+                var dd = $("select#services.selectpicker");                
                 if (service != ""){
                 $("option:contains(" + service + ")").attr("selected", "selected");
                 }
@@ -223,7 +249,13 @@ function ShowCalendar(dt){
 
 function SaveService(eventid){
             var serviceid = $("button.saveservice").attr("id");
-            var url = "/service/" + serviceid + "/update";            
+            var url = "/service/" + serviceid + "/update";
+            var servicetype = $("button[data-id='services']").attr('title');
+            if(servicetype == "NOT SELECTED"){
+                    alert("Select Service Type.");
+                    $("button[data-id='services']").selectpicker({style:'btn-danger'}); 
+                    return;
+                }            
             //both of the following works:
             var service = $("li.selected a span").text();
             //var service = $("button.selectpicker[data-id='services']").attr("title")
@@ -377,9 +409,9 @@ function GetDaySummary(){
             });                 
 }
 
-function GetMonth(iMonth){
-    var sMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    var int = parseInt(iMonth);
-    alert(sMonths[int]);
-    return sMonths[int];        
-    }
+//function GetMonth(iMonth){
+//    var sMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+//    var int = parseInt(iMonth);
+//    alert(sMonths[int]);
+//    return sMonths[int];        
+//    }

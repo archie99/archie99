@@ -76,6 +76,10 @@ app.post('/data', routes.postdata());
 app.get('/calendar/:dt', routes.showcalendar());
 app.get('/getdaysummary/:dt', routes.getdaysummaryjs());
 
+//REPORTS:
+app.get('/reports/year/:year/month/:month/bank/:bank', routes.reportmonth());
+app.get('/reports', routes.reportmonth());
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

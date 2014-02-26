@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+//var x = require('mongoose').Types.ObjectId;
+//var OID = mongoose.Types.ObjectId;
 var dbmodule = require('../public/modules/db');
 var db = require('mongoskin').db("localhost/visits", {w: 0});
 db.bind('events');
@@ -96,6 +98,107 @@ function GetExpences(expyear, expmonths, next){
         });        
     });    
 }
+
+exports.reportmonth = function(req, res){
+    return function(req, res){
+        var year, month, bank, s, e;        
+        var Incomes = [];
+        var Expences = [];
+        if(req.params.year){
+            year = req.params.year;
+        }
+        else{
+            var today = new Date();
+            year = today.getFullYear();    
+        }
+        if(req.params.month){
+            if(req.params.month != 13){
+                month = req.params.month;
+                s = new Date(year + "," + month + ",1")
+                e = new Date(year + "," + month + ",1")        
+                e.setMonth(e.getMonth() + 1);                
+            }
+            else{ 
+                month = 13;               
+                s = new Date(year + ",1,1");
+                e = new Date(year + ",1,1");       
+                e.setFullYear(e.getFullYear() + 1);                  
+                }
+        }
+        else{
+            var today = new Date();
+            month = today.getMonth() + 1;// getMonth returns 0-11
+            s = new Date(year + "," + month + ",1")
+            e = new Date(year + "," + month + ",1")        
+            e.setMonth(e.getMonth() + 1); 
+        }
+        if(req.params.bank){bank = req.params.bank;}
+        else{bank = 0;}        
+        var colEvents = dbmodule.Events;
+        var colServices = dbmodule.Services;
+        var colExpences = dbmodule.Expences;
+        if(bank == 0){
+          var quer = {start_date : {$gte : s}, end_date: {$lte : e }};
+        }
+        else{
+          var quer = {start_date : {$gte : s}, end_date: {$lte : e }, check: 1};  
+        }        
+        //colEvents.find({start_date : {$gte : s}, end_date: {$lte : e }, check: bank}, {_id : 1},
+        colEvents.find(quer, {_id : 1},
+            function(err, events){
+                if(err){console.log(err);}
+                else{
+                        var income = [];
+                        var totalservices = 0;
+                        var count = events.length;
+                        var eventids = [];                        
+                        for(i = 0; i < events.length; i++){
+                            eventids.push(events[i].id);
+                        }                        
+                        colServices.aggregate([
+                                                {$match: {eventid: {$in: eventids}}},                
+                                                {$group: {_id: "$service", total: {$sum: "$price"}}},
+                                                {$sort: {'total': -1}}        
+                                              ], 
+                                              function(err, incomes){
+                                                if(err){console.log(err);}
+                                                else{
+                                                    console.log("from aggregate" + bank);
+                                                    if(bank == 0){   
+                                                        var query = [
+                                                            {$match: {date : {$gte : s, $lte : e }}},
+                                                            {$group: {_id: "$type", total: {$sum: "$price"}}},
+                                                            {$sort: {'total': -1}}       
+                                                            ];
+                                                    }
+                                                    else{
+                                                        var query = [
+                                                            {$match: {date : {$gte : s, $lte : e }, payment:{$ne: "CASH"}}},
+                                                            {$group: {_id: "$type", total: {$sum: "$price"}}},
+                                                            {$sort: {'total': -1}}       
+                                                        ];
+                                                    }                                                    
+                                                    colExpences.aggregate(query,
+                                                        //[
+                                                        //    {$match: {date : {$gte : s, $lte : e }}},
+                                                        //    {$group: {_id: "$type", total: {$sum: "$price"}}},
+                                                        //    {$sort: {'total': -1}}       
+                                                        //    ], 
+                                                            function(err, exp){
+                                                               if(err){console.log(err);}
+                                                               else{                     
+                                                                   res.render('monthreport', {'incomes': incomes, 'expences':exp, 'year': year, 'month':month, 'bank': bank});           
+                                                               } 
+                                                    });
+                                                    
+                                                }                                                
+                        });
+                }                    
+        });       
+    }    
+}
+
+
 
 exports.clients = function(){    
     return function(req, res){
@@ -421,18 +524,19 @@ exports.expencejs = function(){
 exports.editevent = function(){
     return function(req,res){
         var colServices = dbmodule.Services;
-        var eventid = req.params.eventid;
-        //var source = req.params.source;
-        //var clientname = req.params.clientname;
+        var eventid = req.params.eventid;        
+        
         colServices.find({'eventid': eventid}, null, {'sort':{'_id':1}},function(e, docs){
-            var colEvents = dbmodule.Events;            
+            var colEvents = dbmodule.Events;                        
             colEvents.findOne({'_id': eventid}, null, {},function(e, doc){
+                if(e){console.log(e);}
+                else{
                 var com = typeof(doc.comments);
                 if(com == 'undefined'){                    
                     doc.comments = "no comments";                   
-                    }                
-                //res.render('editevent', {'services': docs, 'event': doc, 'source': source});
-                res.render('editevent', {'services': docs, 'event': doc});
+                    }                                
+                res.render('editevent', {'services': docs, 'event': doc});                
+                }
             });   
             });
         };    

@@ -1967,6 +1967,7 @@
     <Content Include="views\eventservices.jade" />
     <Content Include="views\expences.jade" />
     <Content Include="views\layout.jade" />
+    <Content Include="views\monthreport.jade" />
     <Content Include="views\newclient.jade" />
     <Content Include="views\editevent.jade" />
     <Content Include="views\_clientevents.jade" />

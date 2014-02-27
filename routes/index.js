@@ -8,7 +8,7 @@ db.bind('clients');
 db.bind('records');
 db.bind('services');
 
-exports.index = function(req, res){
+exports.expences = function(req, res){
     return function(req, res){
         var colExpences = dbmodule.Expences;
         var exp = new Object();
@@ -666,10 +666,46 @@ exports.clientevents = function(){
         };    
     };
 
+exports.clientproducts = function(){
+    return function(req, res){
+        var colEvents = dbmodule.Events;
+        var colClients = dbmodule.Clients;
+        var colServices = dbmodule.Services;
+        var clientid = req.params.clientid;
+        var CEP = new Object();
+        colClients.findOne({'_id': clientid}, {}, function(e, client){
+            CEP.client = client;
+            var cevents = [];
+            CEP.events = [];//cevents;
+            colEvents.find({'clientid': clientid},null, {'sort':{'start_date':-1}}, function(err, events){
+                if(err){console.log(err);}
+                else{                    
+                    var count = events.length;                       
+                    for(i = 0; i < events.length; i++){ 
+                        var index = i;
+                        CEP.events.push(events[index]);
+                        CEP.events[index].products = [];
+                        colServices.find({eventid:events[index].id, service:'PRODUCTS'}, function(err, services){
+                            for(ii = 0; ii < services.length; ii++){
+                                CEP.events[index].products.push(services[ii]);
+                            }
+                            count--;
+                            if(count <= 0){                                
+                                res.render('clientproducts', {'cep': CEP});        
+                            }                                            
+                        });
+                        
+                    }                     
+                }
+            });
+        });
+    }
+}
+
 exports.showcalendar = function(){
     return function(req, res){
-        var dt = "";
-        if(req.params.dt == "today"){
+        var dt = "";        
+        if((!req.params.dt) || (req.params.dt == "today")){
             dt = new Date().toUTCString();            
         }
         else{

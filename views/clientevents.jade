@@ -11,7 +11,12 @@ block content
 	div.container.well.well-lg
 		div.content
 			- var clientname = cl.firstname + ' ' + cl.lastname;
-			h4 VISITS: #{clientname}
+			div.row
+				div.col-sm-3
+					h4 VISITS: #{clientname}
+				div.col-sm-9
+					a.btn.btn-primary.btn-md.pull-right(id=cl._id,  href="/products/#{cl._id}" data-toggle="tooltip" data-placement="bottom" title="Products for " + clientname)
+						span.glyphicon.glyphicon-shopping-cart
 			each event, i in events
 				- var eventcomments = event.comments.replace(/\n/g, '<br>');
 				- var d = event.start_date;				

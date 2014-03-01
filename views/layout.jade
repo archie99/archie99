@@ -13,11 +13,14 @@ html
 		script(src="http://yui.yahooapis.com/3.14.1/build/yui/yui-min.js")
 		script(src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js")
 		script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
+		script(src="http://code.highcharts.com/highcharts.js")
+		//script(src="/js/themes/gray.js")
 		script(src="/datepicker/js/bootstrap-datepicker.js")
 		script(src="/bootstrap-select-master/bootstrap-select.js")
 		script(src="/dhtmlxScheduler/codebase/dhtmlxscheduler.js")
 		script(src="/javascripts/helper.js")
-		//script(src="js/jquery.confirm.js")		
+		//script(src="js/jquery.confirm.js")	
+		//script(src="https://github.com/malsup/blockui/raw/master/jquery.blockUI.js?v2.34")	
 	body
 		//input#rollButton(type="button", value="Roll")
 		//p.temp
@@ -33,4 +36,6 @@ html
 					a(href="/expences") Expences
 				li(id='navreports')
 					a(href="/reports") Reports
+				li(id='navcharts')
+					a(href="/chart2") Charts
 		block content		

@@ -202,7 +202,34 @@
             $("button#cancel").click(function(){
                 row.css("background-color", "transparent");
                 });                                               
-        });        
+        });   
+        
+         //$(function (){
+         //       alert("build chart");    
+         //       $('#container').highcharts({
+         //           chart: {
+         //               type: 'bar'
+         //           },
+         //           title: {
+         //               text: 'Fruit Consumption'
+         //           },
+         //           xAxis: {
+         //               categories: ['Apples', 'Bananas', 'Oranges']
+         //           },
+         //           yAxis: {
+         //               title: {
+         //                   text: 'Fruit eaten'
+         //               }
+         //           },
+         //           series: [{
+         //               name: 'Jane',
+         //               data: [1, 0, 4]
+         //           }, {
+         //               name: 'John',
+         //               data: [5, 7, 3]
+         //           }]
+         //       })
+         // });
 });
 
 function NewExpence(){                              
@@ -409,9 +436,205 @@ function GetDaySummary(){
             });                 
 }
 
-//function GetMonth(iMonth){
-//    var sMonths = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-//    var int = parseInt(iMonth);
-//    alert(sMonths[int]);
-//    return sMonths[int];        
-//    }
+function BuildChartSingle(container, charttype, title, ytitle, seriesname, seriesdata){
+    var amonths = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+    container.highcharts({
+        chart: {type: charttype},
+        title: {text: title},
+        xAxis: {categories: amonths},
+        yAxis: {title: {text: ytitle}},
+        series: [{name: seriesname, data: seriesdata }]   
+    });
+}
+
+function BuildChartMultiple(container, charttype, title, ytitle, series){
+    var amonths = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+    container.highcharts({
+        chart: {type: charttype},
+        title: {text: title},
+        xAxis: {categories: amonths},
+        yAxis: {title: {text: ytitle}},
+        series: series   
+    });
+}
+
+function BuildCharts2(){             
+        var year = '2014';        
+        //$.blockUI({ message: "<img src='http://www.heathrowtosouthampton.co.uk/Web/images/gif/Processing1.gif' /><br />Loading data..." });
+        $('div#log').removeClass('hide').addClass('show');    
+        GetDataMonthly(year, function(data){
+                //$('div#log').append("<p> data.total BuildChart: " + data.total + "</p>");
+                //$('div#log').append("<p> data.products BuildChart: " + data.products + "</p>"); 
+                //$('div#log').append("<p> data.phour BuildChart: " + data.phour + "</p>"); 
+                //$('div#log').append("<p> data.services BuildChart: " + data.services + "</p>"); 
+                
+                var charttype = 'column';
+                var series = [];
+                series.push({name: 'Total', data: data.total});
+                series.push({name: 'Services', data: data.services});
+                series.push({name: 'Products', data: data.products}); 
+                series.push({name: 'PH', data: data.phour});                                            
+                BuildChartMultiple($('div#total'), charttype, year + " INCOME TOTAL", "$$", series); 
+                BuildChartSingle($('div#phour'), charttype, year + " PER HOUR", "$$", "PH", data.phour); 
+                $('div#log').removeClass('show').addClass('hide');  
+                $('div#total tspan:last').remove();                         
+                $('div#phour tspan:last').remove();       
+       });              
+}
+
+function BuildCharts4(){             
+        var year = '2014';        
+        //$.blockUI({ message: "<img src='http://www.heathrowtosouthampton.co.uk/Web/images/gif/Processing1.gif' /><br />Loading data..." });
+        $('div#log').removeClass('hide').addClass('show');    
+        GetDataMonthly(year, function(data){
+                //$('div#log').append("<p> data.total BuildChart: " + data.total + "</p>");
+                //$('div#log').append("<p> data.products BuildChart: " + data.products + "</p>"); 
+                //$('div#log').append("<p> data.phour BuildChart: " + data.phour + "</p>"); 
+                //$('div#log').append("<p> data.services BuildChart: " + data.services + "</p>"); 
+                
+                var charttype = 'column';
+                var series = [];
+                series.push({name: 'Total', data: data.total});
+                series.push({name: 'Services', data: data.services});
+                series.push({name: 'Products', data: data.products});
+                //series.push({name: 'PH', data: data.phour});
+                //BuildChartCombine($('div#total'), charttype, year + " INCOME TOTAL", "$$", series); 
+                BuildChartSingle($('div#total'), charttype, year + " INCOME TOTAL", "$$", "Total", data.total); 
+                BuildChartSingle($('div#services'), charttype, year + " INCOME SERVICES", "$$", "Services", data.services); 
+                BuildChartSingle($('div#products'), charttype, year + " INCOME PRODUCTS", "$$", "Products", data.products); 
+                BuildChartSingle($('div#phour'), charttype, year + " PER HOUR", "$$", "PH", data.phour); 
+                $('div#log').removeClass('show').addClass('hide');  
+                $('div#total tspan:last').remove();         
+                $('div#services tspan:last').remove();       
+                $('div#products tspan:last').remove();                    
+                $('div#phour tspan:last').remove();       
+       });              
+}
+
+function GetDataMonthly(y, next){    
+    var total = 0;
+    var year = new Object();
+    year.name = y; 
+    year.months = [];
+    //$('div#log').append("<p>start: " + new Date().toISOString() + "</p>");
+        for(i = 0; i < 12; i++){
+            var month = {};
+            month.name = i + 1;
+            month.dates = [];
+            year.months.push(month);          
+            year.months[i].dates = [];         
+            var days = new Date(year.name, year.months[i].name, 0).getDate(); 
+            for(ii = 0; ii < days; ii++){
+                var d = ii + 1;
+                year.months[i].dates.push(d);
+            }
+            //alert("month: " + month.name + " days: " + month.dates.length);
+         } 
+    //call get data for each month from the months array:   
+    GetEachMonth(year.name, year.months, function(data){ 
+        //alert("");
+        var response = {};               
+        //var sortedmonths = data.months.sort(dynamicSort("name"));              
+        var total = [];
+        var services = [];
+        var products = [];
+        var phour = [];
+        var count = data.months.length;
+        //var count = sortedmonths.length;
+
+        data.months.forEach(function(month){  
+         //alert("");             
+        //sortedmonths.forEach(function(month){     
+            var t = month.data.total;
+            var p = month.data.products;
+            var m = month.data.min;           
+            if(t == "NaN"){t = 0;}
+            if(p == "NaN"){p = 0;} 
+            var s = t - p;   
+            var ph = Number(s / m * 60).toFixed(2);
+            if(ph == "NaN"){ph = 0;}  
+                                 
+            total.push(parseInt(t));
+            products.push(parseInt(p));
+            phour.push(parseInt(ph));
+            services.push(parseInt(s));
+            count--;
+            if(count <= 0){ 
+                //alert("");                     
+                response.total = total;   
+                response.products = products;
+                response.phour = phour;
+                response.services = services;
+                next(response);
+            }
+        });        
+        //alert("");
+        //next(response);
+    });    
+}
+
+
+function GetEachMonth(year, months, next){
+    //alert("");
+    var count = months.length;
+    yearmonthsdata = {};    
+    yearmonthsdata.months = [];
+    months.forEach(function(month){
+        //alert("");
+        var monthdata = {};
+        monthdata.name = month.name;
+        monthdata.data = {};
+        GetMonthEachDay(year, month.name, month.dates, function(data){
+            //calculations
+            //alert("");
+            monthdata.data = data;
+            yearmonthsdata.months.push(monthdata);
+            count--;
+            //alert(count);
+            if(count <= 0){
+                //alert(yearmonthsdata.months.length);
+                next(yearmonthsdata);
+            }    
+        });        
+    });           
+}
+
+function GetMonthEachDay(year, month, dates, next){
+    //alert(dates.length);
+    var count = dates.length;
+    var monthdatesdata = {};    
+    monthdatesdata.total = 0;
+    monthdatesdata.products = 0;
+    monthdatesdata.min = 0;
+    dates.forEach(function(date){
+        var dt = new Date(year, month -1 , date).toISOString();
+        var url = "/getdaysummary/" + dt; 
+        $.get(url, function(data){
+            if(data != ""){
+                var total = data.total;
+                var products = data.products;
+                var min = data.min;
+                monthdatesdata.total += total;
+                monthdatesdata.products += products;
+                monthdatesdata.min += min;                                       
+            }
+            count--;  
+            if(count <= 0){
+                //alert("month: " + month + " count: " + count);                
+                next(monthdatesdata);                    
+            }
+        }); 
+    });  
+}
+
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}

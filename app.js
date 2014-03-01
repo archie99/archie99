@@ -82,6 +82,8 @@ app.get('/getdaysummary/:dt', routes.getdaysummaryjs());
 //REPORTS:
 app.get('/reports/year/:year/month/:month/bank/:bank', routes.reportmonth());
 app.get('/reports', routes.reportmonth());
+app.get('/chart2', routes.chart2());
+app.get('/chart4', routes.chart4());
 
 
 http.createServer(app).listen(app.get('port'), function(){

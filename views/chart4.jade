@@ -1,0 +1,36 @@
+//use only spaces for indentation: each indent should be 4 spaces.
+//or only tabs for indentation.
+extends layout
+
+block content
+	script.
+		$('#navhome').removeClass('active');
+		$('#navclients').removeClass('active');
+		$('#navvisits').removeClass('active');	
+		$('#navreports').removeClass('active');		
+		$('#navcharts').addClass('active');
+	div.container.well.well-lg
+		div.content
+			div.container.well.well-lg(style="left: 0px; width: 95%;")
+				div.row
+					div.col-sm-1
+						a.btn.btn-primary.btn-md.pull-left(data-toggle="tooltip" data-placement="bottom" title="Get Data" onclick="BuildCharts4();")
+							span.glyphicon.glyphicon-refresh
+					div.col-sm-10
+						//a.btn.btn-primary.btn-md.pull-right(data-toggle="tooltip" data-placement="bottom" title="Products for " onclick="GetDataMonthly();")
+							span.glyphicon.glyphicon-fire
+					div.col-sm-1
+						a.btn.btn-primary.btn-md.pull-right(data-toggle="tooltip" data-placement="bottom" title="Common Charts" href="/chart2")
+							span.glyphicon.glyphicon-stats	
+				div#log.hide
+					img.img-circle(src="/images/loading17.gif" style="margin-left: 48%; width: 4%")
+				div.row
+					div.col-sm-6
+						div#total(style="width: 100%, height: 100%; padding: 1%;")	
+					div.col-sm-6
+						div#services(style="width: 100%, height: 100%; padding: 1%;")					
+				div.row
+					div.col-sm-6
+						div#products(style="width: 100%, height: 100%; padding: 1%;")	
+					div.col-sm-6
+						div#phour(style="width: 100%, height: 100%; padding: 1%;")	

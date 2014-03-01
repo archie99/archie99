@@ -198,7 +198,17 @@ exports.reportmonth = function(req, res){
     }    
 }
 
+exports.chart2 = function(req,res){
+    return function(req, res){
+    res.render('chart2');
+    }
+}
 
+exports.chart4 = function(req,res){
+    return function(req, res){
+    res.render('chart4');
+    }
+}
 
 exports.clients = function(){    
     return function(req, res){
@@ -568,8 +578,7 @@ exports.getdaysummaryjs = function(){
         var totaldaypriceprod = 0;
         colEvents.find({start_date:{$gte: startiso}, end_date:{ $lte: endiso}}, {'_id':1, 'check':1, 'clientid':1}, function(error, eventlist){
             if(error){console.log(error);}    
-            else{  
-                            
+            else{                            
                 var cc = eventlist.length;   
                 eventlist.forEach(function(event){
                     //console.log("CLIENT: " + event.clientid);    
@@ -619,24 +628,27 @@ exports.getdaysummaryjs = function(){
             ping = new Date(startpingiso);                                
             ping.setMinutes(ping.getMinutes() + i);
             pingiso = ping.toISOString();            
-            colEvents.find({start_date:{$lte:pingiso}, end_date:{$gt:pingiso}}, function(er, events){
-                if(events.length > 0){
-                    busy = busy + 1;                                                            
-                }
-                count--;
-                if (count <= 0){
-                    if(busy > 0){
-                        var m = busy * 15;
-                        var hm = Math.floor(m / 60).toString() + ":" + (m % 60).toString();  
-                        daydata.hm = hm;
-                        daydata.min = m;
-                        console.log(daydata);
-                        res.send(daydata);
+            colEvents.find({start_date:{$lte:pingiso}, end_date:{$gt:pingiso}}, function(err, events){
+                if(err){console.log(err);}
+                else{
+                    if(events.length > 0){
+                        busy = busy + 1;                                                            
                     }
-                    else{
-                        res.send("");
-                    }
-                }                                                            
+                    count--;
+                    if (count <= 0){
+                        if(busy > 0){
+                            var m = busy * 15;
+                            var hm = Math.floor(m / 60).toString() + ":" + (m % 60).toString();  
+                            daydata.hm = hm;
+                            daydata.min = m;
+                            console.log(daydata);
+                            res.send(daydata);
+                        }
+                        else{
+                            res.send("");
+                        }
+                    } 
+                }                                                                           
             });            
          }          
     }                  
@@ -675,7 +687,7 @@ exports.clientproducts = function(){
         var CEP = new Object();
         colClients.findOne({'_id': clientid}, {}, function(e, client){
             CEP.client = client;
-            var cevents = [];
+            //var cevents = [];
             CEP.events = [];//cevents;
             colEvents.find({'clientid': clientid},null, {'sort':{'start_date':-1}}, function(err, events){
                 if(err){console.log(err);}

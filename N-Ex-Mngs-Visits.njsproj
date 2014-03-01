@@ -925,6 +925,7 @@
     <Content Include="public\dhtmlxScheduler\codebase\imgs_glossy\top-separator.gif" />
     <Content Include="public\dhtmlxScheduler\codebase\imgs_glossy\white_tab.png" />
     <Content Include="public\dhtmlxScheduler\codebase\imgs_glossy\white_tab_wide.png" />
+    <Content Include="public\images\loading17.gif" />
     <Content Include="public\index.html" />
     <Content Include="README.md" />
     <Compile Include="app.js" />
@@ -1962,6 +1963,8 @@
     <Compile Include="public\modules\db.js" />
     <Compile Include="routes\index.js" />
     <Content Include="views\calendar.jade" />
+    <Content Include="views\chart4.jade" />
+    <Content Include="views\chart2.jade" />
     <Content Include="views\clientevents.jade" />
     <Content Include="views\clientproducts.jade" />
     <Content Include="views\clients.jade" />
@@ -1975,9 +1978,7 @@
     <Content Include="views\singleclient.jade" />
     <Content Include="views\yui.jade" />
     <Compile Include="public\javascripts\helper.js" />
-    <Content Include="public\stylesheets\style-indent.css" />
     <Content Include="public\stylesheets\style.css" />
-    <Content Include="public\stylesheets\style-indent.styl" />
     <Content Include="public\stylesheets\style.styl" />
   </ItemGroup>
   <ItemGroup>
@@ -2357,6 +2358,7 @@
     <Folder Include="public\dhtmlxScheduler\codebase\imgs\" />
     <Folder Include="public\dhtmlxScheduler\codebase\imgs_dhx_terrace\" />
     <Folder Include="public\dhtmlxScheduler\codebase\imgs_glossy\" />
+    <Folder Include="public\images\" />
     <Folder Include="public\javascripts" />
     <Folder Include="public\modules\" />
     <Folder Include="public\stylesheets" />
